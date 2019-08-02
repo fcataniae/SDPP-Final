@@ -1,0 +1,11 @@
+{
+  "name": "balancer-backend",
+  "version": "1.0.0",
+  "description": "Backend for balancers",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "Franco Catania",
+  "license": "ISC"
+}

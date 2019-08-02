@@ -1,0 +1,11 @@
+{
+  "name": "node-backend",
+  "version": "1.0.0",
+  "description": "Backend for node app",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "Franco Catania",
+  "license": "ISC"
+}
