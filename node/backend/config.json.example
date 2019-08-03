@@ -1,0 +1,11 @@
+{
+  "balancer" : {
+    "host": "localhost",
+    "port": "9080",
+    "path": "/",
+    "protocol": "http"
+  },
+  "sharedfolder":{
+    "path":"c:/users/franco/desktop"
+  }
+}

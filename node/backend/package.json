@@ -4,8 +4,14 @@
   "description": "Backend for node app",
   "main": "app.js",
   "scripts": {
-    "test": "npm start"
+    "start": "node src/app.js"
   },
   "author": "Franco Catania",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "httpdispatcher": "^2.1.2",
+    "multer": "^1.4.2"
+  }
 }
