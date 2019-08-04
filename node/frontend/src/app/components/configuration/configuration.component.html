@@ -1,24 +1,32 @@
 <div class="container">
-  <h2>Configuracion del servidor</h2>
+  <h2 class="title">Configuracion del servidor</h2>
   <form class="form form-md center">
-    <input type="text"
-         name="protocol"
-         [ngModel]="configuration?.balancer.protocol"
-         (ngModelChange)="configuration.balancer.protocol = $event">
-    <input type="text"
-          name="url"
-          [ngModel]="configuration?.balancer.host"
-          (ngModelChange)="configuration.balancer.host = $event">
-    <input type="text"
-         name="port"
-         [ngModel]="configuration?.balancer.port"
-         (ngModelChange)="configuration.balancer.port = $event">
+    <mat-form-field class="input-c">
+      <input matInput type="text"
+           name="protocol"
+           [ngModel]="configuration?.balancer.protocol"
+           (ngModelChange)="configuration.balancer.protocol = $event">
+    </mat-form-field>
+    <mat-form-field class="input-c">
+      <input matInput type="text"
+            name="url"
+            [ngModel]="configuration?.balancer.host"
+            (ngModelChange)="configuration.balancer.host = $event">
+    </mat-form-field>
+    <mat-form-field class="input-c">
+      <input matInput type="text"
+           name="port"
+           [ngModel]="configuration?.balancer.port"
+           (ngModelChange)="configuration.balancer.port = $event">
+     </mat-form-field>
   </form>
-  <h2>Configuracion del nodo</h2>
+  <h2 class="title">Configuracion del nodo</h2>
   <form class="form form-md center">
-    <input type="text"
-         name="port"
-         [ngModel]="configuration?.sharedfolder.path"
-         (ngModelChange)="configuration.sharedfolder.path = $event">
+    <mat-form-field class="input-c">
+        <input matInput type="text"
+             name="port"
+             [ngModel]="configuration?.sharedfolder.path"
+             (ngModelChange)="configuration.sharedfolder.path = $event">
+     </mat-form-field>
   </form>
 </div>

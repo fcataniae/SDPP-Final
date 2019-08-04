@@ -1,0 +1,29 @@
+$MARGIN : 20px;
+$PADDING: 10px;
+$BODERCOLOR: #343434;
+$BGCOLOR: #e8db84;
+
+.form{
+  padding: $PADDING;
+  display: flex;
+}
+.form-md{
+  width: 50%;
+  align-self: center;
+  min-width: 400px;
+}
+.center{
+  align-self: center;
+}
+.container{
+  margin: $MARGIN;
+  padding: $PADDING;
+  border-radius: 10px;
+  border: 1px solid $BODERCOLOR;
+  background-color: $BGCOLOR ;
+}
+.title{
+  align-self: center;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+}
