@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-sm bg-dark sticky-top">
-
-  <a class="navbar-brand" [routerLink]="[brand?.url]">
-    <img [src]="brand?.logoUrl" [alt]="brand?.logo" style="width:40px;">
-  </a>
-  <ul class="navbar-nav" *ngFor="let enlace of enlaces">
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="[enlace?.url]">{{enlace?.view}}</a>
-    </li>
-  </ul>
-  <mat-icon (click)="openDialog()" class="nav-configuration" aria-hidden="false" aria-label="Example home icon">settings</mat-icon>
-
+<nav class="navbar navbar-light navbar-expand-md bg-light justify-content-md-center justify-content-start">
+    <a class="nav-link navbar-brand mx-0 d-none d-md-inline" [routerLink]="[brand?.url]">{{brand?.logo}}</a>
+    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
+        <ul class="navbar-nav mx-auto text-md-center text-left" *ngFor="let enlace of enlaces">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="[enlace?.url]">{{enlace?.view}}</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+            <mat-icon (click)="openDialog()" class="nav-configuration" aria-hidden="false" aria-label="Example home icon">settings</mat-icon>
+        </ul>
+    </div>
 </nav>
