@@ -1,0 +1,24 @@
+<div class="container">
+  <h2>Configuracion del servidor</h2>
+  <form class="form form-md center">
+    <input type="text"
+         name="protocol"
+         [ngModel]="configuration?.balancer.protocol"
+         (ngModelChange)="configuration.balancer.protocol = $event">
+    <input type="text"
+          name="url"
+          [ngModel]="configuration?.balancer.host"
+          (ngModelChange)="configuration.balancer.host = $event">
+    <input type="text"
+         name="port"
+         [ngModel]="configuration?.balancer.port"
+         (ngModelChange)="configuration.balancer.port = $event">
+  </form>
+  <h2>Configuracion del nodo</h2>
+  <form class="form form-md center">
+    <input type="text"
+         name="port"
+         [ngModel]="configuration?.sharedfolder.path"
+         (ngModelChange)="configuration.sharedfolder.path = $event">
+  </form>
+</div>
