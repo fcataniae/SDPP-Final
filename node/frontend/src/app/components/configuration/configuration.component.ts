@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-configuration',
@@ -8,7 +9,8 @@ import { ConfigurationService } from './configuration.service';
 })
 export class ConfigurationComponent implements OnInit {
 
-  constructor(private _HTTP: ConfigurationService) { }
+  constructor(private _HTTP: ConfigurationService,
+              private _DIALOG: MatDialogRef<ConfigurationComponent>) { }
 
   configuration: any;
 
@@ -21,4 +23,8 @@ export class ConfigurationComponent implements OnInit {
     );
   }
 
+  onClose(){
+    this._DIALOG.close();
+  }
+  
 }

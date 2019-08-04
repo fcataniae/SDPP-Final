@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-sm bg-dark sticky-top">
+
+  <a class="navbar-brand" [routerLink]="[brand?.url]">
+    <img [src]="brand?.logoUrl" [alt]="brand?.logo" style="width:40px;">
+  </a>
+  <ul class="navbar-nav" *ngFor="let enlace of enlaces">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="[enlace?.url]">{{enlace?.view}}</a>
+    </li>
+  </ul>
+  <mat-icon (click)="openDialog()" class="nav-configuration" aria-hidden="false" aria-label="Example home icon">settings</mat-icon>
+
+</nav>

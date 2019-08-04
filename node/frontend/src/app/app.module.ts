@@ -8,20 +8,26 @@ import { CustomLocationStrategy } from './app.common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatIconModule, MatDialogModule  } from '@angular/material';
+import { NavbarCustomComponent } from './components/navbar-custom/navbar-custom.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    NavbarCustomComponent
   ],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule
   ],
+  entryComponents: [ ConfigurationComponent ],
+  exports: [ ConfigurationComponent ],
   providers: [
     {
            provide: APP_BASE_HREF,
