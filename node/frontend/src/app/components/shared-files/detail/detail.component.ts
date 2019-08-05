@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'custom-detail',
@@ -12,8 +12,13 @@ export class DetailComponent implements OnInit {
   @Input() file: any;
   @Input() name: any;
   @Input() dir: any;
+  @Output() event = new EventEmitter<any>();
 
   ngOnInit() {
+  }
+
+  onEvent($event){
+    this.event.emit($event);
   }
 
 }

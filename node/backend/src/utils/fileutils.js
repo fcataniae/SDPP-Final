@@ -21,9 +21,14 @@ module.exports = function(){
     });
 
 
+
     return f;
   }
 
+
+  this.readFileSync = function(name,codec){
+    return fs.readFileSync(name,codec);
+  }
   this.getFiles = function(path){
     return readFiles(path);
   }

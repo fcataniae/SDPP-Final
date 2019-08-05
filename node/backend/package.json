@@ -9,6 +9,8 @@
   "author": "Franco Catania",
   "license": "ISC",
   "dependencies": {
+    "atob": "^2.1.2",
+    "btoa": "^1.2.1",
     "express": "^4.17.1",
     "http": "0.0.0",
     "httpdispatcher": "^2.1.2",

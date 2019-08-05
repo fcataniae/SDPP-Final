@@ -14,4 +14,7 @@ export class FssService {
   public getSharedList() : Observable<any>{
     return this._HTTP.get<any>( environment.BACKEND_URL + 'files');
   }
+  public getBinaryFile(path: string) : Observable<any>{
+    return this._HTTP.get<any>( environment.BACKEND_URL + 'file/' + path);
+  }
 }

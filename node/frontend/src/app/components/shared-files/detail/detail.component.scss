@@ -1,48 +1,107 @@
+$W: 3vw;
+$H: 7vh;
+
 .file-icon {
   font-family: Arial, Tahoma, sans-serif;
   font-weight: 300;
   display: inline-block;
-  width: 24px;
-  height: 32px;
+  width: $W;
+  height: $H;
   background: #018fef;
   position: relative;
   border-radius: 2px;
   text-align: left;
   -webkit-font-smoothing: antialiased;
-  :before {
-    display: block;
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-bottom-left-radius: 2px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #fff #fff rgba(255,255,255,.35) rgba(255,255,255,.35);
-  }
-  :after {
-    display: block;
-    content: attr(data-x);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    font-size: 10px;
-    color: #fff;
-    text-transform: lowercase;
-    width: 100%;
-    padding: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+  transition: width 0.3s, height 0.3s;
+}
+.file-icon:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom-left-radius: 2px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #fff #fff rgba(255,255,255,.35) rgba(255,255,255,.35);
+}
+.file-icon:after {
+  display: block;
+  content: attr(data-name);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 10px;
+  color: #fff;
+  text-transform: lowercase;
+  width: 100%;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.file-icon:hover{
+  width: $W*2;
+  height: $H*2;
+  cursor: pointer;
 }
 .file-icon-lg {
-  width: 48px;
-  height: 64px;
+  width: $W * 1.5;
+  height: $H*1.5;
   border-radius: 3px;
 }
 .outer{
   padding: 15px;
   display: inline;
+}
+.folder-icon {
+  font-family: Arial, Tahoma, sans-serif;
+  font-weight: 300;
+  display: inline-block;
+  width: $W;
+  height: $H;
+  background: #a1702f;
+  position: relative;
+  border-radius: 6px;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+  transition: width 0.3s, height 0.3s;
+}
+.folder-icon:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom-left-radius: 10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff #fff #fff #fff;
+}
+.folder-icon:after {
+  display: block;
+  content: attr(data-name);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 10px;
+  color: #fff;
+  text-transform: lowercase;
+  width: 100%;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.folder-icon:hover{
+  width: $W*2;
+  height: $H*2;
+  cursor: pointer;
+}
+.folder-icon-lg {
+  width: $W * 1.5;
+  height: $H*1.5;
+  border-radius: 3px;
 }

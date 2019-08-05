@@ -1,7 +1,8 @@
 const Express = require('express');
 const bodyparser = require('body-parser');
 const querystring = require('querystring');
-
+global.atob = require('atob');
+global.btoa = require('btoa');
 const app = Express();
 const multer  = require('multer');
 const __DIR = 'uploads/';
@@ -12,7 +13,6 @@ const Fsu = require('./utils/fileutils.js')
 const c = new Consts();
 const fs = new Fsu();
 const config = require(c.CONFIG_FILE);
-
 
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -54,7 +54,14 @@ app.route(c.REST_PATH + 'files')
 });
 
 
-
+app.route(c.REST_PATH + 'file/:fileid')
+  .get(function(req,res){
+      let name = atob(req.params.fileid);
+      var file ={}
+      file.binary = fs.readFileSync(name, 'UTF-8');
+      res.send(file);
+    }
+  );
 
 app.use(function(req, res, next) {
  respuesta = {
