@@ -15,7 +15,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.enlaces = [];
-    this.enlaces.push({ view: 'upload', url: '/upload/files'});
+    this.enlaces.push({ view: 'Subir archivos', url: '/uploads'});
     this.brand = {url: '/', logoUrl: './assets/logo.jpg', logo: 'SD&PP'};
     this.configuration= {component : ConfigurationComponent};
   }

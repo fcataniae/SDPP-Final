@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ConfigurationComponent } from './components/configuration/configuration.component';
+import { UploadFilesComponent } from './components/upload-files/upload-files.component';
 
 const routes: Routes = [
-  { path: 'configuration', component : ConfigurationComponent}
+  { path: 'uploads', component : UploadFilesComponent}
 ];
 
 @NgModule({

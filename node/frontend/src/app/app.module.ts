@@ -10,12 +10,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule, MatIconModule, MatDialogModule  } from '@angular/material';
 import { NavbarCustomComponent } from './components/navbar-custom/navbar-custom.component';
+import { UploadFilesComponent } from './components/upload-files/upload-files.component';
+import { SharedFilesComponent } from './components/shared-files/shared-files.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfigurationComponent,
-    NavbarCustomComponent
+    NavbarCustomComponent,
+    UploadFilesComponent,
+    SharedFilesComponent
   ],
   imports: [
     BrowserAnimationsModule,
