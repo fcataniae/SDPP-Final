@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "main":"main.js",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,6 +26,8 @@
     "@angular/router": "~8.2.0",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
+    "ngx-file-drop": "^8.0.4",
+    "ngx-fs": "0.0.1",
     "rxjs": "~6.5.2",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

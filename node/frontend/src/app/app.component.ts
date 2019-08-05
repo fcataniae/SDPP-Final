@@ -13,9 +13,11 @@ export class AppComponent implements OnInit{
   brand: any;
   configuration: any;
 
+
   ngOnInit(): void {
     this.enlaces = [];
     this.enlaces.push({ view: 'Subir archivos', url: '/uploads'});
+    this.enlaces.push({ view: 'Compartidos', url: '/shareds'});
     this.brand = {url: '/', logoUrl: './assets/logo.jpg', logo: 'SD&PP'};
     this.configuration= {component : ConfigurationComponent};
   }
