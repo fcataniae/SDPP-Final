@@ -12,7 +12,7 @@
 *.out
 
 config.json
-
+.idea
 ./node_modules
 node_modules
 
