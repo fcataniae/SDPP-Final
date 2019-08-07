@@ -2,6 +2,7 @@ package com.sdpp.backend.rest.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.util.FileUtil;
+import com.sdpp.backend.rest.util.RestUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,6 +47,11 @@ public class ApiService {
         return FileUtil.getSharedFolderList(getPath());
     }
 
+    @GetMapping("searh")
+    public Object doSearch(){
+
+        return RestUtil.getObjectForUrl(config.get(URL).asText());
+    }
 
 
 
@@ -57,8 +63,7 @@ public class ApiService {
 
 
 
-
-
+    private static String URL = "url";
 
     private String getPath(){
         return config.get("sharedfolder").get("path").asText();
