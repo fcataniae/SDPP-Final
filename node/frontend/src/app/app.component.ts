@@ -22,5 +22,7 @@ export class AppComponent implements OnInit{
     this.configuration= {component : ConfigurationComponent};
   }
 
-
+  handleEvent($event){
+    console.log($event);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 @Component({
@@ -11,12 +11,22 @@ export class NavbarCustomComponent implements OnInit {
   @Input() enlaces: any;
   @Input() brand: any;
   @Input() configuration: any;
+  @Input() searchbox: any;
+  @Output() event = new EventEmitter<any>();
+
+  searchText: String;
+
 
   constructor(private _DIALOG: MatDialog) { }
+
 
   ngOnInit() {
   }
 
+  onEvent($event){
+    console.log($event);
+    this.event.emit(this.searchText);
+  }
   openDialog(){
     console.log(this.configuration.component);
     var dialog = this._DIALOG.open( this.configuration.component);

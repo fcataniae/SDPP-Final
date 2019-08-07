@@ -1,6 +1,5 @@
 package com.sdpp.backend.rest.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.util.FileUtil;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class ApiService {
     }
 
     @GetMapping("config/server")
-    public Object getConfigurations() throws IOException {
+    public Object getConfigurations() {
         return config;
     }
 
@@ -46,6 +45,20 @@ public class ApiService {
     public Object getSharedList(){
         return FileUtil.getSharedFolderList(getPath());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private String getPath(){
         return config.get("sharedfolder").get("path").asText();

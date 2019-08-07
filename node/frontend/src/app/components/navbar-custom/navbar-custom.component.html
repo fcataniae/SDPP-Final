@@ -1,15 +1,25 @@
 <nav class="navbar navbar-light navbar-expand-md bg-light justify-content-md-center justify-content-start">
     <a class="nav-link navbar-brand mx-0 d-none d-md-inline" [routerLink]="[brand?.url]">{{brand?.logo}}</a>
+
     <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
         <ul class="navbar-nav mx-auto text-md-center " >
             <li class="nav-item" *ngFor="let enlace of enlaces">
                 <a class="nav-link" [routerLink]="[enlace?.url]">{{enlace?.view}}</a>
             </li>
+
         </ul>
     </div>
-        <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
-          <li class="nav-item">
-            <mat-icon (click)="openDialog()" class="nav-configuration" aria-hidden="false" aria-label="Example home icon">settings</mat-icon>
-          </li>
-        </ul>
+    <form *ngIf="searchbox" class="navbar-form" role="search">
+      <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="search" name="q" />
+        <div class="input-group-btn">
+          <button class="btn btn-default" (click)="onEvent($event)" type="submit"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </form>
+    <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+      <li class="nav-item">
+        <mat-icon (click)="openDialog()" class="nav-configuration" aria-hidden="false" aria-label="Example home icon">settings</mat-icon>
+      </li>
+    </ul>
 </nav>
