@@ -1,9 +1,7 @@
 package com.sdpp.backend.rest.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdpp.backend.rest.service.ApiService;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

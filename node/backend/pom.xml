@@ -40,11 +40,30 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>Renaming build artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>./../frontend</workingDirectory>
+                            <executable>ng</executable>
+                            <commandlineArgs>build --prod</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <phase>package</phase>
                         <goals><goal>copy-resources</goal></goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes/static/</outputDirectory >
@@ -53,25 +72,6 @@
                                     <directory>./../frontend/dist/frontend</directory>
                                 </resource>
                             </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution><!-- Run our version calculation script -->
-                        <id>Renaming build artifacts</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <workingDirectory>./../frontend</workingDirectory>
-                            <executable>ng</executable>
-                            <commandlineArgs>build --prod</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
