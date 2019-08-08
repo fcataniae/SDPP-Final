@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Base64;
 
 /**
  * Usuario: Franco
@@ -49,8 +50,8 @@ public class ApiService {
 
     @GetMapping("searh")
     public Object doSearch(){
-
-        return RestUtil.getObjectForUrl(config.get(URL).asText());
+        //RestUtil.getObjectForUrl(getUrl());
+        return getUrl();
     }
 
 
@@ -62,8 +63,26 @@ public class ApiService {
 
 
 
+    private static String BALANCER ="balancer";
+    private static String HOST = "host";
+    private static String PORT = "port";
+    private static String PATH = "path";
+    private static String PROTOCOL = "protocol";
+    private static String DOTS = ":";
+    private static String SEPARATOR  = "/";
 
-    private static String URL = "url";
+    private String getUrl(){
+
+        String url;
+
+        url = config.get(BALANCER).get(PROTOCOL).asText();
+        url = url + DOTS + SEPARATOR + SEPARATOR;
+        url = url + config.get(BALANCER).get(HOST).asText() + DOTS;
+        url = url + config.get(BALANCER).get(PORT).asText() + SEPARATOR;
+        url = url + config.get(BALANCER).get(PATH).asText();
+
+        return url;
+    }
 
     private String getPath(){
         return config.get("sharedfolder").get("path").asText();
