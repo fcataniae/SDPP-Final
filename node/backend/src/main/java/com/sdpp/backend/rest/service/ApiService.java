@@ -17,6 +17,7 @@ import java.util.Base64;
 
 @RestController
 @RequestMapping(("/rest/api"))
+@CrossOrigin
 public class ApiService {
 
     private static final String CONFIG = "config.json";
@@ -48,7 +49,7 @@ public class ApiService {
         return FileUtil.getSharedFolderList(getPath());
     }
 
-    @GetMapping("searh")
+    @GetMapping("search")
     public Object doSearch(){
         //RestUtil.getObjectForUrl(getUrl());
         return getUrl();

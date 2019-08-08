@@ -18,6 +18,7 @@ export class AppComponent implements OnInit{
     this.enlaces = [];
     this.enlaces.push({ view: 'Subir archivos', url: '/uploads'});
     this.enlaces.push({ view: 'Compartidos', url: '/shareds'});
+    this.enlaces.push({ view: 'Busqueda avanzada', url: '/searchs'});
     this.brand = {url: '/', logoUrl: './assets/logo.jpg', logo: 'SD&PP'};
     this.configuration= {component : ConfigurationComponent};
   }

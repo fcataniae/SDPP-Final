@@ -14,4 +14,7 @@ export class ConfigurationService {
   public getConfigurations() : Observable<any>{
     return this._HTTP.get<any>( environment.BACKEND_URL + 'config/server');
   }
+  public saveConfiguration(configs: any) : Observable<any>{
+    return this._HTTP.post<any>( environment.BACKEND_URL +'config/server' , configs );
+  }
 }

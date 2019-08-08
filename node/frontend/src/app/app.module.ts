@@ -12,6 +12,7 @@ import { NavbarCustomComponent } from './components/navbar-custom/navbar-custom.
 import { UploadFilesComponent } from './components/upload-files/upload-files.component';
 import { SharedFilesComponent } from './components/shared-files/shared-files.component';
 import { DetailComponent } from './components/shared-files/detail/detail.component';
+import { SearchFilesComponent } from './components/search-files/search-files.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DetailComponent } from './components/shared-files/detail/detail.compone
     NavbarCustomComponent,
     UploadFilesComponent,
     SharedFilesComponent,
-    DetailComponent
+    DetailComponent,
+    SearchFilesComponent
   ],
   imports: [
     BrowserAnimationsModule,

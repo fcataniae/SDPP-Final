@@ -46,7 +46,7 @@
                 <executions>
                     <execution><!-- Run our version calculation script -->
                         <id>Renaming build artifacts</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -63,7 +63,7 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals><goal>copy-resources</goal></goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes/static/</outputDirectory >

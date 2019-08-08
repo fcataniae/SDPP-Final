@@ -23,7 +23,12 @@ export class ConfigurationComponent implements OnInit {
     );
   }
 
-  onClose(){
+  onClose(save: boolean){
+    if(save){
+      this._HTTP.saveConfiguration(this.configuration).subscribe(
+        res => console.log(res)
+      )
+    }
     this._DIALOG.close();
   }
   
