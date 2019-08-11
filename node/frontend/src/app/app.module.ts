@@ -13,6 +13,7 @@ import { UploadFilesComponent } from './components/upload-files/upload-files.com
 import { SharedFilesComponent } from './components/shared-files/shared-files.component';
 import { DetailComponent } from './components/shared-files/detail/detail.component';
 import { SearchFilesComponent } from './components/search-files/search-files.component';
+import { CustomUploadComponent } from './components/upload-files/custom-upload/custom-upload.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SearchFilesComponent } from './components/search-files/search-files.com
     UploadFilesComponent,
     SharedFilesComponent,
     DetailComponent,
-    SearchFilesComponent
+    SearchFilesComponent,
+    CustomUploadComponent
   ],
   imports: [
     BrowserAnimationsModule,

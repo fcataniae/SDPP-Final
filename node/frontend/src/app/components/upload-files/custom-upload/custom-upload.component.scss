@@ -1,0 +1,40 @@
+ul{
+  list-style: none;
+}
+
+li{
+  display: inline-block;
+}
+.cont{
+  width: 150px;
+  height: 60px;
+  max-width: 150px;
+  max-height: 60px;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+.text,progress{
+  display: block;
+  width: 98%;
+  margin: 1px;
+  padding: 2px;
+}
+.text:before{
+  content: attr(data-name);
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}
+.dropeable{
+  margin: 5%;
+  padding: 5%;
+  border: 1px dotted black;
+  border-radius: 20px;
+  display: block;
+}
+label,input{
+  display: block;
+}

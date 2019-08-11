@@ -1,0 +1,17 @@
+<div class="form-group dropeable">
+  <label for="file">Agregue o arrastre archivos</label>
+  <input type="file"
+         id="file"
+         multiple
+         (change)="handleFileInput($event.target.files)">
+</div>
+
+<ul *ngIf="files">
+  <li *ngFor="let file of files">
+    <div class="cont">
+      <div class="text" [attr.data-name]="file.name"></div>
+      <progress *ngIf="file.progress != 100" [value]="file.progress" max="100">0%</progress>
+      <div *ngIf="file.progress == 100">Archivo subido!</div>
+    </div>
+  </li>
+</ul>

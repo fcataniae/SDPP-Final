@@ -23,13 +23,8 @@ constructor( private _HTTP: HttpClient) { }
     return this._HTTP.get<any>(environment.BACKEND_URL + 'searchs?' + FssService.buildParams(params) );
   }
 
-  public postFile(file: any):Observable<any>{
-    const data = new FormData();
-    data.append('file', file,file.name);
-    return this._HTTP.post(environment.BACKEND_URL + 'upload/file',data,{
-      reportProgress: true,
-      observe: 'events'
-    });
+  public getUploadUrl(): string{
+    return environment.BACKEND_URL + 'upload/file';
   }
 
 
