@@ -11,8 +11,10 @@ li{
   max-width: 150px;
   max-height: 60px;
   padding: 5px;
+  margin: 5px;
   border-radius: 10px;
   border: 1px solid #ccc;
+  overflow: hidden;
 }
 .text,progress{
   display: block;
@@ -24,7 +26,5 @@ li{
   content: attr(data-name);
   top: 0;
   left: 0;
-  white-space: pre-wrap;
-  overflow: hidden;
-
+  white-space: nowrap;
 }

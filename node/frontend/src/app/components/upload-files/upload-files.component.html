@@ -37,7 +37,8 @@
   <li *ngFor="let file of files">
     <div class="cont">
       <div class="text" [attr.data-name]="file.name"></div>
-      <progress [value]="file.progress" max="100">0%</progress>
+      <progress *ngIf="file.progress != 100" [value]="file.progress" max="100">0%</progress>
+      <div *ngIf="file.progress == 100">Archivo subido!</div>
     </div>
   </li>
 </ul>
