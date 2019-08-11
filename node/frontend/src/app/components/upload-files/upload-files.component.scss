@@ -1,0 +1,30 @@
+ul{
+  list-style: none;
+}
+
+li{
+  display: inline-block;
+}
+.cont{
+  width: 150px;
+  height: 60px;
+  max-width: 150px;
+  max-height: 60px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+.text,progress{
+  display: block;
+  width: 100%;
+  margin: 1px;
+  padding: 2px;
+}
+.text:before{
+  content: attr(data-name);
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  overflow: hidden;
+
+}

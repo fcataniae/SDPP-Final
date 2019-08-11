@@ -35,8 +35,9 @@
 
 <ul *ngIf="files">
   <li *ngFor="let file of files">
-    {{file?.name}}
-    <br>
-    <progress [value]="file.progress" max="100">0%</progress>
+    <div class="cont">
+      <div class="text" [attr.data-name]="file.name"></div>
+      <progress [value]="file.progress" max="100">0%</progress>
+    </div>
   </li>
 </ul>
