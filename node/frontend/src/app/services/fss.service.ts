@@ -4,12 +4,12 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+providedIn: 'root'
 })
 export class FssService {
 
 
-  constructor( private _HTTP: HttpClient) { }
+constructor( private _HTTP: HttpClient) { }
 
   public getSharedList() : Observable<any>{
     return this._HTTP.get<any>( environment.BACKEND_URL + 'files');

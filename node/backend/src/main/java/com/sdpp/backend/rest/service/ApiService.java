@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Base64;
 
 /**
  * Usuario: Franco
@@ -55,6 +57,21 @@ public class ApiService {
         return getUrl();
     }
 
+    @PostMapping("upload/file")
+    public String uploadFile(@RequestParam("file") MultipartFile file){
+
+        File f = new File("C:/users/franco/desktop/" + file.getOriginalFilename());
+
+        try {
+            f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f);
+            out.write(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
 
 
 
