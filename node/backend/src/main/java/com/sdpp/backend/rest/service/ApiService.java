@@ -62,9 +62,10 @@ public class ApiService {
 
         File f = new File("C:/users/franco/desktop/" + file.getOriginalFilename());
 
-        try {
+        try (
+             FileOutputStream out = new FileOutputStream(f);
+        ){
             f.createNewFile();
-            FileOutputStream out = new FileOutputStream(f);
             out.write(file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
