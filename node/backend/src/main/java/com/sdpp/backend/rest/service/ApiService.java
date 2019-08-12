@@ -48,7 +48,7 @@ public class ApiService {
 
     @GetMapping("files")
     public Object getSharedList(){
-        return FileUtil.getSharedFolderList(getPath());
+        return FileUtil.getSharedFolderList(getSharedFolder());
     }
 
     @GetMapping("search")
@@ -58,28 +58,17 @@ public class ApiService {
     }
 
     @PostMapping("upload/file")
-    public String uploadFile(@RequestParam("file") MultipartFile file){
-
-        File f = new File("C:/users/franco/desktop/" + file.getOriginalFilename());
-
-        try (
-             FileOutputStream out = new FileOutputStream(f);
-        ){
-            f.createNewFile();
-            out.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
+    public void uploadFile(@RequestParam("file") MultipartFile file){
+        FileUtil.createFileToPath(file,getSharedFolder());
     }
 
 
+    private static String SHF = "sharedfolder";
 
 
-
-
-
+    private String getSharedFolder() {
+        return config.get(SHF).get(PATH).asText();
+    }
 
 
     private static String BALANCER ="balancer";
@@ -101,10 +90,6 @@ public class ApiService {
         url = url + config.get(BALANCER).get(PATH).asText();
 
         return url;
-    }
-
-    private String getPath(){
-        return config.get("sharedfolder").get("path").asText();
     }
 
     private void loadConfig(){
