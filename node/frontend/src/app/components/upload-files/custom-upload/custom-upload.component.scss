@@ -29,11 +29,15 @@ li{
   white-space: nowrap;
 }
 .dropeable{
-  margin: 5%;
-  padding: 5%;
-  border: 1px dotted black;
+  border: 2px dashed #ccc;
   border-radius: 20px;
-  display: block;
+  width: 700px;
+  font-family: sans-serif;
+  margin: 50px auto;
+  padding: 20px;
+}
+.dropeable.highlight {
+  border-color: purple;
 }
 label,input{
   display: block;

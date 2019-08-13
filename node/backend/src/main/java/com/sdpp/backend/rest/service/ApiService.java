@@ -6,8 +6,6 @@ import com.sdpp.backend.rest.util.RestUtil;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -53,8 +51,7 @@ public class ApiService {
 
     @GetMapping("search")
     public Object doSearch(){
-        //RestUtil.getObjectForUrl(getUrl());
-        return getUrl();
+        return RestUtil.getObjectForUrl(getUrl());
     }
 
     @PostMapping("upload/file")

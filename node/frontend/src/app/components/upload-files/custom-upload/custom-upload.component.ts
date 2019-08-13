@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Directive, HostListener, Input, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpEventType} from "@angular/common/http";
+
 
 @Component({
   selector: 'custom-upload',
@@ -12,19 +13,37 @@ export class CustomUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initDropArea();
+  }
+
+
+  handleDrop($event) {
+    let dt = $event.dataTransfer;
+    let files = dt.files;
+
+    console.log(files);
+    this.handleFileInput(files);
+  }
+
+  static preventDefaults ($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 
   files: any[];
   @Input() uploadUrl: string;
 
   handleFileInput(fs: FileList) {
-    this.clearFinished();
-    for(let i = 0; i< fs.length ; i++){
-      let file = {name: fs.item(i).name, progress: 0};
-      this.files.push(file);
-      this.postFile(fs.item(i), file)
-    }
+    console.log('2 ' + fs );
+      this.clearFinished();
+      console.log(fs.length);
+      for (let i = 0; i < fs.length; i++) {
+        let file = {name: fs.item(i).name, progress: 0};
+        this.files.push(file);
+        this.postFile(fs.item(i), file)
+      }
   }
+
 
   postFile(file: any, rep: any){
     const data = new FormData();
@@ -50,5 +69,29 @@ export class CustomUploadComponent implements OnInit {
     }else{
       this.files = [];
     }
+  }
+
+  private initDropArea() {
+    let droparea = document.querySelector('.dropeable');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      droparea.addEventListener(eventName, CustomUploadComponent.preventDefaults, false)
+    });
+
+    let highlight = function ($event) {
+      this.classList.add('highlight');
+    };
+
+    let unhighlight = function ($event) {
+      this.classList.remove('highlight');
+    };
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      droparea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      droparea.addEventListener(eventName, unhighlight, false);
+    });
+
   }
 }
