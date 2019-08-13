@@ -1,4 +1,4 @@
-import {Component, Directive, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient, HttpEventType} from "@angular/common/http";
 
 
