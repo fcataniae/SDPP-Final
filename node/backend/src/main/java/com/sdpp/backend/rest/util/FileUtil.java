@@ -47,12 +47,13 @@ public class FileUtil {
 
     public static void createFileToPath(MultipartFile file, String sharedFolder) {
 
-        File f = new File(sharedFolder + UPDFOLDER + file.getOriginalFilename());
+        String newFileName = sharedFolder + UPDFOLDER + file.getOriginalFilename();
+        File f = new File(newFileName);
+
         f.getParentFile().mkdirs();
         try (
             FileOutputStream out = new FileOutputStream(f);
         ){
-
             f.createNewFile();
             out.write(file.getBytes());
         } catch (IOException e) {

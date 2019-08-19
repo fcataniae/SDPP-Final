@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 @CrossOrigin
 public class ApiService {
 
-    private static final String CONFIG = "config.json";
+    private static final String FILENAME = "config.json";
     private JsonNode config;
 
     public ApiService(){
@@ -35,7 +35,7 @@ public class ApiService {
 
     @PostMapping("config/server")
     public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException {
-        FileUtil.setJsonFileOnClassLoader(CONFIG,json);
+        FileUtil.setJsonFileOnClassLoader(FILENAME,json);
         loadConfig();
     }
 
@@ -46,7 +46,7 @@ public class ApiService {
 
     @GetMapping("files")
     public Object getSharedList(){
-        return FileUtil.getSharedFolderList(getSharedFolder());
+        return FileUtil.getSharedFolderList(getSharedFolderPathName());
     }
 
     @GetMapping("search")
@@ -56,14 +56,14 @@ public class ApiService {
 
     @PostMapping("upload/file")
     public void uploadFile(@RequestParam("file") MultipartFile file){
-        FileUtil.createFileToPath(file,getSharedFolder());
+        FileUtil.createFileToPath(file, getSharedFolderPathName());
     }
 
 
     private static String SHF = "sharedfolder";
 
 
-    private String getSharedFolder() {
+    private String getSharedFolderPathName() {
         return config.get(SHF).get(PATH).asText();
     }
 
@@ -91,7 +91,7 @@ public class ApiService {
 
     private void loadConfig(){
         try {
-            config = (JsonNode) FileUtil.getJsonFileFromClassLoader(CONFIG);
+            config = (JsonNode) FileUtil.getJsonFileFromClassLoader(FILENAME);
         } catch (IOException e) {
             e.printStackTrace();
         }
