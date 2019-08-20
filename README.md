@@ -30,10 +30,10 @@ Sobre las carpetas **../node/backend** y **../balancer/backend** ejecutar el sig
   mvn package
 </pre>
  
-En las carpetas **../node/backend/target** y **../balancer/backend/target** encontraremos los jar que podemos ejecutar para con el siguiente comando
+En las carpetas **../node/backend/target** y **../balancer/backend/target** encontraremos los jar que podemos ejecutar con el siguiente comando
 
 <pre>
   java -jar <nombre-del-jar>.jar --server.port=<puerto>
 </pre>
 
-Luego desde el navegador podemos acceder al frontend de cada aplicacion desde http://<ip>:<puerto>/
+Luego desde el navegador podemos acceder al frontend de cada aplicacion desde <pre>http://localhost:puerto/</pre> donde localhost puede ser cambiado por la ip correspondiente y el puerto corresponde al que se selecciona al iniciar la aplicacion
