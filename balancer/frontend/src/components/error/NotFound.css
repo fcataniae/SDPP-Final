@@ -1,0 +1,10 @@
+.not-found{
+    margin-top: 10vh;
+    margin-left: 35vw;
+}
+.not-found:after{
+    content: '404 NOT FOUND';
+    position: absolute;
+    font-size: 2.5rem;
+    font-family: 'Quicksand', sans-serif;
+}
