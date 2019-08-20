@@ -23,10 +23,10 @@ export default class SearchText extends React.Component {
 
     render(){
         return (
-            <div className="search-component">
-                <Form onSubmit={this.handleSubmit} inline>
-                    <FormControl type="text" placeholder="Busqueda" className="mr-sm-2" />
-                    <Button type="submit" variant="outline-success" >Buscar</Button>
+            <div className="search-component m-auto">
+                <Form onSubmit={this.handleSubmit} className="form-inline">
+                    <FormControl type="text" placeholder="Busqueda" className="text-md-center w-50 ml-auto" />
+                    <Button type="submit" variant="outline-success" className="mr-lg-2 m-2 mr-auto " >Buscar</Button>
                 </Form>
             </div>
         );
