@@ -1,25 +1,36 @@
 import React from 'react';
 import './SearchText.css';
 import { Form, FormControl, Button } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 
-export default class SearchText extends React.Component {
+class SearchText extends React.Component {
 
     constructor(props){
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            results: []
+        }
     }
 
-    handleSubmit(event){
+    handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://localhost:9000/rest/api/search', {
-            method: 'get',
-            headers: {'Content-Type':'application/json'}
-        }).then(
-            (res) => res.json()
-        ).then(function(data){
-            console.log(data);
-        });
-    };
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        fetch('http://localhost:9000/rest/api/search')
+            .then(
+                (res) => res.json()
+            ).then(
+                (data) =>
+                this.setState({results: data})
+            );
+    }
+
+    componentDidUpdate = () => {
+        let results = this.state.results;
+        this.props.history.push('/results', { results });
+    }
 
     render(){
         return (
@@ -32,3 +43,5 @@ export default class SearchText extends React.Component {
         );
     }
 }
+
+export default withRouter(SearchText);
