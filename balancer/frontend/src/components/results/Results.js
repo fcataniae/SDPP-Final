@@ -4,14 +4,16 @@ export default class Results extends React.Component {
 
     constructor(props){
         super(props);
+        this.state = { data : [] };
         if(this.props.location.state)
-            console.log(this.props.location.state.results);
+            this.state.data = this.props.location.state.results;
     }
     render(){
-        return (
-            <div >
-Results
-            </div>
-        );
+        return (<div>
+            { this.state.data.map(function(item) {
+                return <div>{item}</div>
+            })
+            }
+        </div>);
     }
 }
