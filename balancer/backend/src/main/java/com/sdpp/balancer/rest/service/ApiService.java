@@ -23,13 +23,40 @@ public class ApiService {
 
     @GetMapping("/search")
     public Object doSearch(){
-        List<String> lista = new ArrayList<>();
-        lista.add("prueba1");
-        lista.add("prueba2");
-        lista.add("prueba3");
-        lista.add("prueba4");
-        lista.add("prueba5");
-        System.out.println(lista);
+        return sendDataDummy();
+    }
+
+    //Solo para testing
+    private Object sendDataDummy(){
+
+        List<FileWrapper> lista = new ArrayList<>();
+
+        FileWrapper file = new FileWrapper();
+        file.name = "Code Clean";
+        file.type = "PDF";
+        file.node = "Nodo 124";
+        lista.add(file);
+        file = new FileWrapper();
+        file.name = "RQ - Paquete comercio";
+        file.type = "DOCX";
+        file.node = "Nodo 122";
+        lista.add(file);
+        file = new FileWrapper();
+        file.name = "Secuencia";
+        file.type = "TXT";
+        file.node = "Nodo 123";
+        lista.add(file);
+
         return lista;
+    }
+
+    private class FileWrapper{
+
+        String name;
+        String type;
+        String node;
+
+        public FileWrapper(){}
+
     }
 }
