@@ -10,11 +10,11 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-
+*.iml
 config.json
 .idea
 ./node_modules
 node_modules
-
+target
 uploads
 ./uploads

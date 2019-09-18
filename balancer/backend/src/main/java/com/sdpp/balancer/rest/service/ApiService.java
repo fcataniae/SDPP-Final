@@ -32,31 +32,22 @@ public class ApiService {
         List<FileWrapper> lista = new ArrayList<>();
 
         FileWrapper file = new FileWrapper();
-        file.name = "Code Clean";
-        file.type = "PDF";
-        file.node = "Nodo 124";
+        file.setName("Code Clean");
+        file.setType("PDF");
+        file.setNode("Nodo 124");
         lista.add(file);
         file = new FileWrapper();
-        file.name = "RQ - Paquete comercio";
-        file.type = "DOCX";
-        file.node = "Nodo 122";
+        file.setName("RQ - Paquete comercio");
+        file.setType("DOCX");
+        file.setNode("Nodo 122");
         lista.add(file);
         file = new FileWrapper();
-        file.name = "Secuencia";
-        file.type = "TXT";
-        file.node = "Nodo 123";
+        file.setName("Secuencia");
+        file.setType("TXT");
+        file.setNode("Nodo 123");
         lista.add(file);
 
         return lista;
     }
 
-    private class FileWrapper{
-
-        String name;
-        String type;
-        String node;
-
-        public FileWrapper(){}
-
-    }
 }
