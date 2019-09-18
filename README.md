@@ -11,6 +11,7 @@ Necesitamos tener instalados los siguiente:
 * [JDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Node JS (LTS preferible)](https://nodejs.org/es/download/)
 * [Maven 3.5](https://maven.apache.org/download.cgi)
+* [MongoDB 4.2.0](https://www.mongodb.com/download-center/community)
 
 Desde CMD ejecutar el siguiente comando 
 <pre>
