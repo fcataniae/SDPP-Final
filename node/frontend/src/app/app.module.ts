@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { MatInputModule, MatIconModule, MatDialogModule  } from '@angular/material';
@@ -14,6 +14,8 @@ import { SharedFilesComponent } from './components/shared-files/shared-files.com
 import { DetailComponent } from './components/shared-files/detail/detail.component';
 import { SearchFilesComponent } from './components/search-files/search-files.component';
 import { CustomUploadComponent } from './components/upload-files/custom-upload/custom-upload.component';
+import {ConfirmacionPopupComponent} from "./components/popup/confirmacion-popup.component";
+import {Interceptor} from "./services/interceptor.service";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { CustomUploadComponent } from './components/upload-files/custom-upload/c
     SharedFilesComponent,
     DetailComponent,
     SearchFilesComponent,
-    CustomUploadComponent
+    CustomUploadComponent,
+    ConfirmacionPopupComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -36,9 +39,14 @@ import { CustomUploadComponent } from './components/upload-files/custom-upload/c
     MatDialogModule,
     NgxFileDropModule
   ],
-  entryComponents: [ ConfigurationComponent, DetailComponent],
+  entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent],
   exports: [ ConfigurationComponent ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true
+    },
     {
            provide: APP_BASE_HREF,
            useValue: '/' + (window.location.pathname.split('/')[1] || 'desa')

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{data.titulo}}</h1>
+<div mat-dialog-content>
+  <p>{{data.mensaje}}</p>
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="!data.error" mat-button (click)="onCancel()">Cancelar</button>
+  <button class="btn btn-danger" mat-button (click)="onSubmit()" cdkFocusInitial>{{boton}}</button>
+</div>

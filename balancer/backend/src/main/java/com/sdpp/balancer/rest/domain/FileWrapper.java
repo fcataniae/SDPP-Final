@@ -1,4 +1,4 @@
-package com.sdpp.balancer.rest.service;
+package com.sdpp.balancer.rest.domain;
 
 public class FileWrapper{
 

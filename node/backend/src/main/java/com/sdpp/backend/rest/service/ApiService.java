@@ -20,23 +20,18 @@ import java.net.URISyntaxException;
 @CrossOrigin
 public class ApiService {
 
-    private static final String FILENAME = "config.json";
-    private JsonNode config;
 
     public ApiService(){
-        loadConfig();
-
     }
 
     @GetMapping("config/server")
     public Object getConfigurations() {
-        return config;
+        return FileUtil.getConfig();
     }
 
     @PostMapping("config/server")
     public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException {
-        FileUtil.setJsonFileOnClassLoader(FILENAME,json);
-        loadConfig();
+        FileUtil.setJsonFileOnClassLoader(json);
     }
 
     @GetMapping("file/{id}")
@@ -46,54 +41,19 @@ public class ApiService {
 
     @GetMapping("files")
     public Object getSharedList(){
-        return FileUtil.getSharedFolderList(getSharedFolderPathName());
+        return FileUtil.getSharedFolderList();
     }
 
     @GetMapping("search")
     public Object doSearch(){
-        return RestUtil.getObjectForUrl(getUrl());
+        return RestUtil.getObjectForUrl(FileUtil.getUrl());
     }
 
     @PostMapping("upload/file")
     public void uploadFile(@RequestParam("file") MultipartFile file){
-        FileUtil.createFileToPath(file, getSharedFolderPathName());
+        FileUtil.createFileToPath(file);
     }
 
 
-    private static String SHF = "sharedfolder";
 
-
-    private String getSharedFolderPathName() {
-        return config.get(SHF).get(PATH).asText();
-    }
-
-
-    private static String BALANCER ="balancer";
-    private static String HOST = "host";
-    private static String PORT = "port";
-    private static String PATH = "path";
-    private static String PROTOCOL = "protocol";
-    private static String DOTS = ":";
-    private static String SEPARATOR  = "/";
-
-    private String getUrl(){
-
-        String url;
-
-        url = config.get(BALANCER).get(PROTOCOL).asText();
-        url = url + DOTS + SEPARATOR + SEPARATOR;
-        url = url + config.get(BALANCER).get(HOST).asText() + DOTS;
-        url = url + config.get(BALANCER).get(PORT).asText() + SEPARATOR;
-        url = url + config.get(BALANCER).get(PATH).asText();
-
-        return url;
-    }
-
-    private void loadConfig(){
-        try {
-            config = (JsonNode) FileUtil.getJsonFileFromClassLoader(FILENAME);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.sdpp.balancer.rest.service;
 
+import com.sdpp.balancer.rest.domain.FileWrapper;
 import com.sdpp.balancer.socket.ServerSocketController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
