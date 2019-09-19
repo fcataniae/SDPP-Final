@@ -2,6 +2,8 @@ package com.sdpp.backend.rest.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sdpp.backend.rest.domain.DocumentFile;
+import com.sdpp.backend.rest.domain.MetaData;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -9,7 +11,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Usuario: Franco
@@ -48,8 +57,30 @@ public class FileUtil {
         return path;
     }
 
-    public static Object getSharedFolderList() {
-        throw new UnsupportedOperationException();
+
+    public static List<DocumentFile> getSharedFolderList() throws IOException {
+        String path = getSharedFolderPathName();
+        List<DocumentFile> files = new ArrayList<>();
+        Files.walk(Paths.get(path)).forEach( p -> {
+            if(Files.isRegularFile(p)){
+                try {
+                    BasicFileAttributes attr = Files.readAttributes(p, BasicFileAttributes.class);
+                    DocumentFile doc = new DocumentFile();
+                    doc.setName(p.getFileName().toString());
+                    MetaData meta = new MetaData();
+                    meta.setPath(p.getParent().toString());
+                    meta.setCreateTime(attr.creationTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    meta.setModifiedTime(attr.creationTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    meta.setSize(attr.size());
+                    meta.setExtension(doc.getName().substring(doc.getName().lastIndexOf('.') + 1));
+                    doc.setMeta(meta);
+                    files.add(doc);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return files;
     }
 
     public static void setJsonFileOnClassLoader(JsonNode json) throws IOException, URISyntaxException {

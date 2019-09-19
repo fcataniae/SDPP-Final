@@ -1,13 +1,17 @@
 package com.sdpp.backend.rest.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sdpp.backend.rest.domain.DocumentFile;
+import com.sdpp.backend.rest.service.components.MongoDBConnection;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Usuario: Franco
@@ -20,7 +24,8 @@ import java.net.URISyntaxException;
 @CrossOrigin
 public class ApiService {
 
-
+    @Autowired
+    private MongoDBConnection mongoDBConnection;
     public ApiService(){
     }
 
@@ -40,8 +45,8 @@ public class ApiService {
     }
 
     @GetMapping("files")
-    public Object getSharedList(){
-        return FileUtil.getSharedFolderList();
+    public List<DocumentFile> getSharedList() throws IOException {
+        return mongoDBConnection.getAllEntities(DocumentFile.class);
     }
 
     @GetMapping("search")
