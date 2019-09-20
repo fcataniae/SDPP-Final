@@ -34,6 +34,7 @@ export class SharedFilesComponent implements OnInit {
       var di = this.entry.createComponent(factory);
       di.instance.dir = false;
       di.instance.name = f.name;
+      di.instance.file = true;
     });
   }
 

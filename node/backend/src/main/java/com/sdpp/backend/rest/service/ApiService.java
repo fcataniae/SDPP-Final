@@ -3,6 +3,7 @@ package com.sdpp.backend.rest.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.service.components.MongoDBConnection;
+import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,13 @@ import java.util.List;
 @CrossOrigin
 public class ApiService {
 
-    @Autowired
     private MongoDBConnection mongoDBConnection;
-    public ApiService(){
+    private WatcherSystemService watcherSystemService;
+
+    public ApiService(MongoDBConnection mongoDBConnection,
+                      WatcherSystemService watcherSystemService){
+        this.watcherSystemService = watcherSystemService;
+        this.mongoDBConnection = mongoDBConnection;
     }
 
     @GetMapping("config/server")
@@ -35,8 +40,13 @@ public class ApiService {
     }
 
     @PostMapping("config/server")
-    public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException {
+    public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException, InterruptedException {
+        String previousPath = FileUtil.getSharedFolderPathName();
         FileUtil.setJsonFileOnClassLoader(json);
+        String newPath = FileUtil.getSharedFolderPathName();
+        if(!previousPath.equals(newPath))
+            watcherSystemService.setNewPath();
+
     }
 
     @GetMapping("file/{id}")

@@ -86,6 +86,7 @@ public class FileUtil {
     public static void setJsonFileOnClassLoader(JsonNode json) throws IOException, URISyntaxException {
         ObjectMapper om = new ObjectMapper();
         om.writeValue(Paths.get(getURIFromClassLoader(FILENAME).toURI()).toFile(),json);
+        loadConfig();
     }
 
 
@@ -113,7 +114,7 @@ public class FileUtil {
     }
 
 
-    private static String getSharedFolderPathName() {
+    public static String getSharedFolderPathName() {
         return config.get(SHF).get(PATH).asText();
     }
 
