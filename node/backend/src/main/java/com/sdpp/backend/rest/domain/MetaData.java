@@ -1,30 +1,30 @@
 package com.sdpp.backend.rest.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 public class MetaData implements Serializable {
 
-    private LocalDate createdTime;
-    private LocalDate modifiedTime;
+    private Date createdTime;
+    private Date modifiedTime;
     private String author;
     private String extension;
     private String path;
     private Long size;
 
-    public LocalDate getCreateTime() {
+    public Date getCreateTime() {
         return createdTime;
     }
 
-    public void setCreateTime(LocalDate createTime) {
+    public void setCreateTime(Date createTime) {
         this.createdTime = createTime;
     }
 
-    public LocalDate getModifiedTime() {
+    public Date getModifiedTime() {
         return modifiedTime;
     }
 
-    public void setModifiedTime(LocalDate modifiedTime) {
+    public void setModifiedTime(Date modifiedTime) {
         this.modifiedTime = modifiedTime;
     }
 
@@ -61,5 +61,6 @@ public class MetaData implements Serializable {
     }
 
     public MetaData() {
+
     }
 }

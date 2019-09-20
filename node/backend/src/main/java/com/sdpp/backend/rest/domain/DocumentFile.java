@@ -8,6 +8,7 @@ public class DocumentFile implements Serializable {
     private MetaData meta;
 
     public DocumentFile() {
+        meta = new MetaData();
     }
 
     public String getName() {

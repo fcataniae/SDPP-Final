@@ -18,6 +18,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,8 +70,8 @@ public class FileUtil {
                     doc.setName(p.getFileName().toString());
                     MetaData meta = new MetaData();
                     meta.setPath(p.getParent().toString());
-                    meta.setCreateTime(attr.creationTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                    meta.setModifiedTime(attr.creationTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    meta.setCreateTime(new Date(attr.creationTime().toMillis()));
+                    meta.setModifiedTime(new Date(attr.lastModifiedTime().toMillis()));
                     meta.setSize(attr.size());
                     meta.setExtension(doc.getName().substring(doc.getName().lastIndexOf('.') + 1));
                     doc.setMeta(meta);
