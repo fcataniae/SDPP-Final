@@ -11,6 +11,8 @@ import com.sdpp.backend.rest.util.FileUtil;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -29,10 +31,12 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Component
 public class MongoDBConnection{
 
+    private static final Logger logger = LoggerFactory.getLogger(MongoDBConnection.class);
     private static MongoClient mongoClient;
     private static MongoDatabase database;
     private static String databaseName = "SDPP";
     private static final String PREF = "";
+    private static final String DOT = ".";
 
     public MongoDBConnection(Properties props){
         String url = String.valueOf(props.get("url"));
@@ -50,7 +54,7 @@ public class MongoDBConnection{
             collection.deleteMany(new BasicDBObject());
             docs.forEach(doc -> collection.insertOne(anyObjectToBSON(doc)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error while initializing DB w folder content",e);
         }
 
     }
@@ -89,7 +93,6 @@ public class MongoDBConnection{
         try {
             Class<?> clazz = toFind.getClass();
             Field[] fields = clazz.getDeclaredFields();
-
             for (Field field : fields) {
                 field.setAccessible(true);
                 Object fieldObject = field.get(toFind);
@@ -103,7 +106,7 @@ public class MongoDBConnection{
                 }
             }
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            logger.warn("Error while creating BSON from object",e);
         }
         return bson;
     }
@@ -113,7 +116,6 @@ public class MongoDBConnection{
         try {
             Class<?> clazz = toFind.getClass();
             Field[] fields = clazz.getDeclaredFields();
-
             for (Field field : fields) {
                 field.setAccessible(true);
                 Object fieldObject = field.get(toFind);
@@ -122,7 +124,7 @@ public class MongoDBConnection{
                     if(isJavaClass(fieldObject.getClass())){
                         bson.append(prex.concat(name), fieldObject);
                     }else{
-                        Document doc = anyObjectToBSONForQuery(name.concat("."),fieldObject);
+                        Document doc = anyObjectToBSONForQuery(name.concat(DOT),fieldObject);
                         for (Map.Entry<String, Object> kv : doc.entrySet()) {
                             bson.append(kv.getKey(),kv.getValue());
                         }
@@ -130,7 +132,7 @@ public class MongoDBConnection{
                 }
             }
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            logger.info("Error while creating query from BSON",e);
         }
         return bson;
     }
@@ -155,7 +157,7 @@ public class MongoDBConnection{
                 }
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            logger.warn("Error while parsing BSON to object.", e);
             throw new RuntimeException(e);
         }
         return object;

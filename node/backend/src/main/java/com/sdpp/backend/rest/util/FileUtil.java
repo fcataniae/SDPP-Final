@@ -12,11 +12,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +28,7 @@ public class FileUtil {
     private static JsonNode config;
     private static final String FILENAME = "config.json";
     private static String SHF = "sharedfolder";
-    private static final String UPDFOLDER = "uploads/";
+    private static final String UPDFOLDER = "/uploads/";
     private static String BALANCER ="balancer";
     private static String HOST = "host";
     private static String PORT = "port";
@@ -39,7 +36,6 @@ public class FileUtil {
     private static String PROTOCOL = "protocol";
     private static String DOTS = ":";
     private static String SEPARATOR  = "/";
-
 
 
 

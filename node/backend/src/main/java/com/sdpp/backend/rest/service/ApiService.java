@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.service.components.MongoDBConnection;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
+import com.sdpp.backend.rest.util.CustomCacheBuilder;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
+import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,13 @@ public class ApiService {
 
     private MongoDBConnection mongoDBConnection;
     private WatcherSystemService watcherSystemService;
+
+    private static final String NAMECACHE = "querys";
+    private static final int POOLCACHE = 400;
+    private static final int TTLCACHE = 60;
+
+    private static Cache CACHE = buildCache();
+
 
     public ApiService(MongoDBConnection mongoDBConnection,
                       WatcherSystemService watcherSystemService){
@@ -69,6 +78,8 @@ public class ApiService {
         FileUtil.createFileToPath(file);
     }
 
-
+    private static Cache buildCache() {
+        return CustomCacheBuilder.newCache(NAMECACHE,POOLCACHE,TTLCACHE);
+    }
 
 }

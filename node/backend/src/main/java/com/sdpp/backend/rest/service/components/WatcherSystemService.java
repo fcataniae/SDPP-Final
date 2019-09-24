@@ -4,6 +4,8 @@ import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.domain.MetaData;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sun.nio.file.ExtendedWatchEventModifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,7 +20,7 @@ import java.util.Date;
 public class WatcherSystemService implements ApplicationRunner {
 
     private String path;
-
+    private static final Logger logger = LoggerFactory.getLogger(WatcherSystemService.class);
     private static WatchService watchService;
     private final static WatchEvent.Kind[] kinds = new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
             StandardWatchEventKinds.ENTRY_DELETE};
@@ -32,12 +34,12 @@ public class WatcherSystemService implements ApplicationRunner {
     public void startService() {
         try {
             path = FileUtil.getSharedFolderPathName();
-            System.out.println("Starting watch service at path " + path);
+            logger.info("Starting watch service at path {}", path);
             watchService = FileSystems.getDefault().newWatchService();
             registerPath();
             watchEvents();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.warn("Error while starting watcher service in path {}",path, e );
             throw new ClosedWatchServiceException();
         }
     }
@@ -61,19 +63,23 @@ public class WatcherSystemService implements ApplicationRunner {
     }
 
     private void processDeleteEvent(Path path) {
+        logger.info("processing delete event for path {}", path);
         DocumentFile doc = new DocumentFile();
         doc.setName(path.getFileName().toString());
         doc.getMeta().setPath(path.getParent().toString());
         doc = mongoDBConnection.getEntity(DocumentFile.class, doc);
         mongoDBConnection.removeEntity(DocumentFile.class, doc);
+        logger.info("event delete procesed succesfully");
     }
 
     private void processCreateEvent(Path path) {
-        DocumentFile doc = createFromPath(path);
+        logger.info("processing create event for path {}", path);
+        DocumentFile doc = createDocumentFileFromPath(path);
         mongoDBConnection.insertEntity(DocumentFile.class, doc);
+        logger.info("event create procesed succesfully");
     }
 
-    private DocumentFile createFromPath(Path p) {
+    private DocumentFile createDocumentFileFromPath(Path p) {
         DocumentFile doc = new DocumentFile();
         try {
             BasicFileAttributes attr = Files.readAttributes(p, BasicFileAttributes.class);
@@ -86,7 +92,7 @@ public class WatcherSystemService implements ApplicationRunner {
             meta.setExtension(doc.getName().substring(doc.getName().lastIndexOf('.') + 1));
             doc.setMeta(meta);
         }catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error while creating object from path {}",p.getFileName().toString(),e);
         }
         return doc;
     }
@@ -100,8 +106,10 @@ public class WatcherSystemService implements ApplicationRunner {
 
     public void setNewPath() throws IOException {
         path = FileUtil.getSharedFolderPathName();
+        logger.info("new path set {}", path);
         mongoDBConnection.initDbWithFolderContent();
         WatchKey key = registerPath();
+        logger.info("canceling watcher service in previous path");
         key.cancel();
         startService();
     }
