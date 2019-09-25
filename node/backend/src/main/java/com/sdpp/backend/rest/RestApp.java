@@ -2,10 +2,7 @@ package com.sdpp.backend.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.service.components.MongoDBConnection;
-import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.FileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -9,6 +9,7 @@ import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,11 +37,18 @@ public class ApiService {
 
     private static Cache CACHE = buildCache();
 
+    @Value("${build.version}")
+    private String version;
 
     public ApiService(MongoDBConnection mongoDBConnection,
                       WatcherSystemService watcherSystemService){
         this.watcherSystemService = watcherSystemService;
         this.mongoDBConnection = mongoDBConnection;
+    }
+
+    @GetMapping("version")
+    public String getVersion(){
+        return "SDPP-Node v".concat(version);
     }
 
     @GetMapping("config/server")
@@ -64,7 +72,7 @@ public class ApiService {
     }
 
     @GetMapping("files")
-    public List<DocumentFile> getSharedList() throws IOException {
+    public List<DocumentFile> getSharedList(){
         return mongoDBConnection.getAllEntities(DocumentFile.class);
     }
 
