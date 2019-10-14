@@ -16,7 +16,7 @@ export class AppEffects {
       switchMap( () => this.version$.getVersion()
           .pipe(
              catchError(err => of(errorVersion({version: err}))),
-             map( result => succesVersion({version: result}))
+             map( result => succesVersion({version: result.version}))
           )
         )
       ),

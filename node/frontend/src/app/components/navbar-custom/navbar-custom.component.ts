@@ -24,11 +24,9 @@ export class NavbarCustomComponent implements OnInit {
   }
 
   onEvent($event){
-    console.log($event);
     this.event.emit(this.searchText);
   }
   openDialog(){
-    console.log(this.configuration.component);
     var dialog = this._DIALOG.open( this.configuration.component);
     dialog.afterClosed().subscribe();
   }

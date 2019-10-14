@@ -46,9 +46,10 @@ public class ApiService {
         this.mongoDBConnection = mongoDBConnection;
     }
 
+
     @GetMapping("version")
     public String getVersion(){
-        return "SDPP-Node v".concat(version);
+        return "{ \"version\":\"SDPP-Node v".concat(version).concat("\"}");
     }
 
     @GetMapping("config/server")
