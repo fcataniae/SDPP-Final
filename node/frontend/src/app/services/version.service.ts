@@ -10,7 +10,7 @@ export class VersionService {
 
   constructor(private _HTTP: HttpClient) { }
 
-  getVersion(): Observable<string>{
-    return this._HTTP.get<string>(environment.BACKEND_URL + 'version');
+  getVersion(): Observable<any>{
+    return this._HTTP.get<any>(environment.BACKEND_URL + 'version');
   }
 }

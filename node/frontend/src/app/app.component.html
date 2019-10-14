@@ -1,6 +1,6 @@
-<my-navbar [enlaces]="enlaces"
-           [brand]="brand"
-           [configuration]="configuration"
+<my-navbar *ngIf="(configs | async)?.enlaces" [enlaces]="(configs | async)?.enlaces"
+           [brand]="(configs | async)?.brand"
+           [configuration]="(configs | async)?.configuration"
            [searchbox]="true"
             (event)=" handleEvent($event)"></my-navbar>
 <div class="body">
@@ -8,6 +8,6 @@
 </div>
 <footer class="w-100">
   <div class=" container text-center">
-    {{version}} 2019
+    {{ (configs | async)?.version}} 2019
   </div>
 </footer>

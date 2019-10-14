@@ -14,7 +14,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class WatcherSystemService implements ApplicationRunner {
@@ -117,5 +120,11 @@ public class WatcherSystemService implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         startService();
+    }
+
+    public static void main(String[] args) {
+        Integer e = 1;
+        Integer e2 = e + 1;
+        System.out.println(e.compareTo(e2));
     }
 }

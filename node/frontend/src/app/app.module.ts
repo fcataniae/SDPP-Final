@@ -16,6 +16,25 @@ import { SearchFilesComponent } from './components/search-files/search-files.com
 import { CustomUploadComponent } from './components/upload-files/custom-upload/custom-upload.component';
 import {ConfirmacionPopupComponent} from "./components/popup/confirmacion-popup.component";
 import {Interceptor} from "./services/interceptor.service";
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './redux/app.effects';
+import {ActionReducer, MetaReducer, StoreModule} from '@ngrx/store';
+import { menuReducer } from "./redux/app.reducers";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+
+
+export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
+  return function(state, action) {
+    console.log('state', state);
+    console.log('action', action);
+
+    return reducer(state, action);
+  };
+}
+
+export const metaReducers: MetaReducer<any>[] = [debug];
+
 
 @NgModule({
   declarations: [
@@ -37,7 +56,12 @@ import {Interceptor} from "./services/interceptor.service";
     MatInputModule,
     MatIconModule,
     MatDialogModule,
-    NgxFileDropModule
+    NgxFileDropModule,
+    StoreModule.forRoot(
+      { menu : menuReducer }, { metaReducers }
+    ),
+    EffectsModule.forRoot([AppEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent],
   exports: [ ConfigurationComponent ],

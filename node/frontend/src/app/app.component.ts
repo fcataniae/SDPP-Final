@@ -1,36 +1,25 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { ConfigurationComponent } from './components/configuration/configuration.component';
-import {VersionService} from "./services/version.service";
+import {Component, OnInit} from '@angular/core';
+import {Observable} from "rxjs";
+import {select, Store} from "@ngrx/store";
+import {getVersion} from "./redux/app.actions";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy{
+export class AppComponent implements OnInit {
 
-  title = 'frontend';
-  enlaces: any;
-  brand: any;
-  configuration: any;
-  version: string;
+  configs: Observable<any> = this.store$.pipe(select('menu'));
 
-  constructor(private _VS: VersionService){}
-
-  ngOnInit(): void {
-    this.enlaces = [];
-    this.enlaces.push({ view: 'Subir archivos', url: '/uploads'});
-    this.enlaces.push({ view: 'Compartidos', url: '/shareds'});
-    this.enlaces.push({ view: 'Busqueda avanzada', url: '/searchs'});
-    this.brand = {url: '/', logoUrl: './assets/logo.jpg', logo: 'SD&PP'};
-    this.configuration= {component : ConfigurationComponent};
-    this.version = "aaa";
+  constructor(private store$: Store<{ state: any}>) {
   }
 
-  handleEvent($event){
+  ngOnInit() {
+    this.store$.dispatch(getVersion());
+  }
+
+  handleEvent($event) {
     console.log($event);
-  }
-
-  ngOnDestroy(): void {
   }
 }
