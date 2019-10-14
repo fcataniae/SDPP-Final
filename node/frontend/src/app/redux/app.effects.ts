@@ -13,10 +13,10 @@ export class AppEffects {
 
   loadVersion$ =  createEffect( () =>this.actions$.pipe(
       ofType(getVersion),
-      switchMap( action => this.version$.getVersion()
+      switchMap( () => this.version$.getVersion()
           .pipe(
              catchError(err => of(errorVersion({version: err}))),
-             map( res => succesVersion({version: res}))
+             map( result => succesVersion({version: result}))
           )
         )
       ),

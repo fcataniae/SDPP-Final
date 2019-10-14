@@ -20,8 +20,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './redux/app.effects';
 import {ActionReducer, MetaReducer, StoreModule} from '@ngrx/store';
 import { menuReducer } from "./redux/app.reducers";
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -60,8 +58,7 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     StoreModule.forRoot(
       { menu : menuReducer }, { metaReducers }
     ),
-    EffectsModule.forRoot([AppEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    EffectsModule.forRoot([AppEffects])
   ],
   entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent],
   exports: [ ConfigurationComponent ],
