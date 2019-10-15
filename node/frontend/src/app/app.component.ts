@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {getVersion} from "./redux/app.actions";
+import {ReduxService} from "./redux/redux.service";
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,13 @@ import {getVersion} from "./redux/app.actions";
 })
 export class AppComponent implements OnInit {
 
-  configs: Observable<any> = this.store$.pipe(select('menu'));
+  configs: Observable<any> = this.state$.getSelector('menu');
 
-  constructor(private store$: Store<{ state: any}>) {
+  constructor(private state$: ReduxService) {
   }
 
   ngOnInit() {
-    this.store$.dispatch(getVersion());
+    this.state$.getVersion();
   }
 
   handleEvent($event) {

@@ -19,7 +19,7 @@ import {Interceptor} from "./services/interceptor.service";
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './redux/app.effects';
 import {ActionReducer, MetaReducer, StoreModule} from '@ngrx/store';
-import { menuReducer } from "./redux/app.reducers";
+import {fileReducer, menuReducer} from "./redux/app.reducers";
 
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -56,7 +56,8 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     MatDialogModule,
     NgxFileDropModule,
     StoreModule.forRoot(
-      { menu : menuReducer }, { metaReducers }
+      { menu : menuReducer, file: fileReducer },
+      { metaReducers }
     ),
     EffectsModule.forRoot([AppEffects])
   ],

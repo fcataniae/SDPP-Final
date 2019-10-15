@@ -8,14 +8,15 @@ import com.sdpp.backend.rest.util.CustomCacheBuilder;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 import org.ehcache.Cache;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Usuario: Franco
@@ -48,8 +49,10 @@ public class ApiService {
 
 
     @GetMapping("version")
-    public String getVersion(){
-        return "{ \"version\":\"SDPP-Node v".concat(version).concat("\"}");
+    public Object getVersion(){
+        Map<String, String> v = new LinkedHashMap<>();
+        v.put("version","SDPP-Node v".concat(version));
+        return v;
     }
 
     @GetMapping("config/server")
