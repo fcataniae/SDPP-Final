@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {VersionService} from "../services/version.service";
-import {catchError, map, switchMap} from "rxjs/operators";
+import {catchError, map, switchMap, tap} from "rxjs/operators";
 import {
   errorGetAllFiles,
   errorGetVersion,
@@ -36,7 +36,7 @@ export class AppEffects {
     switchMap(() => this.fs$.getSharedList()
         .pipe(
           catchError(err => of(errorGetAllFiles({error: err}))),
-          map(res => successGetAllFiles({files: res}))
+          map(res => successGetAllFiles({files: Array.from(res)}))
         )
       )
     ),

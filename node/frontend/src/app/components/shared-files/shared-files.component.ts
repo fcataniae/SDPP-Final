@@ -1,11 +1,9 @@
 import {Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnDestroy} from '@angular/core';
-import { FssService } from 'src/app/services/fss.service';
 import { DetailComponent } from './detail/detail.component';
 import {ReduxService} from "../../redux/redux.service";
-import {map, takeUntil} from "rxjs/operators";
-import {Subject} from "rxjs";
+import {of, Subject} from "rxjs";
+import {debounceTime, map, switchMap, takeUntil} from "rxjs/operators";
 
-const _FILE = 'file';
 
 @Component({
   selector: 'app-shared-files',
@@ -16,23 +14,35 @@ export class SharedFilesComponent implements OnInit, OnDestroy {
 
   constructor(protected  state$ : ReduxService, private resolver$ : ComponentFactoryResolver) { }
   @ViewChild('dirs', { static:true, read: ViewContainerRef }) entry: ViewContainerRef;
-  sharedfiles = this.state$.getSelector('file');
-
+  sharedfiles$ = this.state$.getSelector('file');
+  sharedfiles = [];
   destroy$ = new Subject();
+  loading = false;
 
   ngOnInit() {
     this.state$.getAllFiles();
+    this.sharedfiles$
+      .pipe(
+        debounceTime(300),
+        map(res => res.files),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(res => {
+        this.sharedfiles = res;
+        this.load();
+        this.loading = true;
+      });
   }
 
   ngOnDestroy(){
     this.destroy$.next();
     this.destroy$.complete();
   }
+
   load(){
     const factory = this.resolver$.resolveComponentFactory(DetailComponent);
     this.entry.clear();
     this.sharedfiles.forEach( f => {
-      console.log(f);
       var di = this.entry.createComponent(factory);
       di.instance.dir = false;
       di.instance.name = f.name;

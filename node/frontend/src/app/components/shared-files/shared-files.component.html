@@ -1,6 +1,12 @@
-<br>
-<h4 class="title">Lista de archivos/carpetas compartidas</h4>
-<br>
+<ng-container *ngIf="loading; else load">
+  <br>
+  <h4 class="title">Lista de archivos/carpetas compartidas</h4>
+  <br>
+
+</ng-container>
 <ng-template #dirs>
 
+</ng-template>
+<ng-template #load>
+  <app-loading></app-loading>
 </ng-template>

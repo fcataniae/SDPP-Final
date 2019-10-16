@@ -1,13 +1,20 @@
-<my-navbar *ngIf="(configs | async)?.enlaces" [enlaces]="(configs | async)?.enlaces"
-           [brand]="(configs | async)?.brand"
-           [configuration]="(configs | async)?.configuration"
-           [searchbox]="true"
-            (event)=" handleEvent($event)"></my-navbar>
-<div class="body">
-  <router-outlet></router-outlet>
-</div>
-<footer class="w-100">
-  <div class=" container text-center">
-    {{ (configs | async)?.version}} 2019
+<ng-container *ngIf="config$ | async as config; else load">
+  <my-navbar [enlaces]="config.enlaces"
+             [brand]="config.brand"
+             [configuration]="config.configuration"
+             [searchbox]="true"
+              (event)=" handleEvent($event)"></my-navbar>
+  <div class="body">
+    <router-outlet></router-outlet>
   </div>
-</footer>
+
+  <footer class="w-100">
+    <div class=" container text-center">
+      {{ config.version}} 2019
+    </div>
+  </footer>
+</ng-container>
+<ng-template #load>
+  asdasd
+  <app-loading></app-loading>
+</ng-template>

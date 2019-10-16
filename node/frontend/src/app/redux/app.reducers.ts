@@ -44,7 +44,7 @@ const fileInitialState : FileState = {
 
 export const _fileReducer = createReducer(fileInitialState,
   on(Action.getAllFiles, state => ({...state})),
-  on(Action.successGetAllFiles, (state, action)=> ({...state, files:({...action.files})})),
+  on(Action.successGetAllFiles, (state, action)=> ({...state, files:([...action.files])})),
   on(Action.errorGetAllFiles, (state, action) => ({...state, error: ({...action.error})}))
 );
 

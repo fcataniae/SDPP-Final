@@ -20,6 +20,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './redux/app.effects';
 import {ActionReducer, MetaReducer, StoreModule} from '@ngrx/store';
 import {fileReducer, menuReducer} from "./redux/app.reducers";
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -44,7 +45,8 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     DetailComponent,
     SearchFilesComponent,
     CustomUploadComponent,
-    ConfirmacionPopupComponent
+    ConfirmacionPopupComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserAnimationsModule,

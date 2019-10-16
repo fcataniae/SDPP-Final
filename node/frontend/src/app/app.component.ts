@@ -11,13 +11,13 @@ import {ReduxService} from "./redux/redux.service";
 })
 export class AppComponent implements OnInit {
 
-  configs: Observable<any> = this.state$.getSelector('menu');
+  config$: Observable<any> = this.state$.getSelector('menu');
 
   constructor(private state$: ReduxService) {
   }
 
   ngOnInit() {
-    this.state$.getVersion();
+    this.state$.getVersion()
   }
 
   handleEvent($event) {
