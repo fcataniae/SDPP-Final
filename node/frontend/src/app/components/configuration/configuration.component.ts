@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfigurationService } from './configuration.service';
 import { MatDialogRef } from '@angular/material';
+import {ReduxService} from "../../redux/redux.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-configuration',
@@ -9,27 +10,19 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ConfigurationComponent implements OnInit {
 
-  constructor(private _HTTP: ConfigurationService,
-              private _DIALOG: MatDialogRef<ConfigurationComponent>) { }
+  constructor(private state$: ReduxService,
+              private dialog$: MatDialogRef<ConfigurationComponent>) { }
 
-  configuration: any;
+  configuration$: Observable<any> = this.state$.getSelector('config');
 
   ngOnInit() {
-    this._HTTP.getConfigurations().subscribe(
-      res => {
-        this.configuration = res
-        console.log(this.configuration);
-      }
-    );
+    this.state$.getConfiguration();
   }
 
-  onClose(save: boolean){
-    if(save){
-      this._HTTP.saveConfiguration(this.configuration).subscribe(
-        res => console.log(res)
-      )
-    }
-    this._DIALOG.close();
+  onClose(save: boolean, config: any){
+    if(save)
+      this.state$.saveConfiguration( config );
+    this.dialog$.close();
   }
-  
+
 }

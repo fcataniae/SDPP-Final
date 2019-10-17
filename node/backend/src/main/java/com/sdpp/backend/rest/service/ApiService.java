@@ -14,9 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Usuario: Franco
@@ -50,9 +49,7 @@ public class ApiService {
 
     @GetMapping("version")
     public Object getVersion(){
-        Map<String, String> v = new LinkedHashMap<>();
-        v.put("version","SDPP-Node v".concat(version));
-        return v;
+        return Collections.singletonMap("version","SDPP-Node v".concat(version));
     }
 
     @GetMapping("config/server")

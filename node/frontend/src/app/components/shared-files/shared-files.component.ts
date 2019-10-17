@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnDestroy} from '@angular/core';
 import { DetailComponent } from './detail/detail.component';
-import {ReduxService} from "../../redux/redux.service";
-import {of, Subject} from "rxjs";
-import {debounceTime, map, switchMap, takeUntil} from "rxjs/operators";
+import { ReduxService} from "../../redux/redux.service";
+import { Subject} from "rxjs";
+import { debounceTime, map, takeUntil} from "rxjs/operators";
 
 
 @Component({
@@ -35,6 +35,7 @@ export class SharedFilesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.state$.deleteFiles();
     this.destroy$.next();
     this.destroy$.complete();
   }

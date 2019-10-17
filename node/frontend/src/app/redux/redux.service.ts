@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {select, Store} from "@ngrx/store";
-import {getAllFiles, getVersion} from "./app.actions";
+import {getAllFiles, getConfiguration, getVersion, removeFiles, saveConfiguration} from "./app.actions";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -23,4 +23,15 @@ export class ReduxService{
   }
 
 
+  deleteFiles() {
+    this.store$.dispatch(removeFiles());
+  }
+
+  getConfiguration() {
+    this.store$.dispatch(getConfiguration());
+  }
+
+  saveConfiguration(config: any) {
+    this.store$.dispatch(saveConfiguration({config: config}))
+  }
 }

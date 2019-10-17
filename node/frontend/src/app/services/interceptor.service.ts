@@ -7,35 +7,21 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import {Observable, of, throwError} from 'rxjs';
-import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
-import {ConfirmacionPopupComponent} from "../components/popup/confirmacion-popup.component";
+import {Observable, of} from 'rxjs';
 
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
 
-  constructor(private _matdialog: MatDialog, private _router : Router){}
+  constructor(){}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError((err, caught) => {
       if (err instanceof HttpErrorResponse) {
-        if (err.status === 500) {
-          console.log(err);
-          console.log(caught);
-          let dialog = this._matdialog.open(ConfirmacionPopupComponent,{
-            data: {mensaje:"Ocurrio un error inesperado: " + err.error.message, titulo: "Error:",error: true}
-          });
-          dialog.afterClosed().subscribe();
-        }else if (err.status === 404){
-          console.log(err);
-          console.log(caught);
-          let dialog = this._matdialog.open(ConfirmacionPopupComponent,{
-            data: {mensaje:"No se pudo encontrar el recurso especificado " + err.error.message, titulo: "Error:",error: true}
-          });
-          dialog.afterClosed().subscribe();
-        }
+        let errorMessage = err.message;
+        if(err.error.message)
+          errorMessage = err.error.message;
+        throw new Error(errorMessage);
       }
       return of(err);
     }) as any);

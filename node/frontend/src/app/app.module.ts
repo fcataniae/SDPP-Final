@@ -6,7 +6,6 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NgxFileDropModule } from 'ngx-file-drop';
 import { MatInputModule, MatIconModule, MatDialogModule  } from '@angular/material';
 import { NavbarCustomComponent } from './components/navbar-custom/navbar-custom.component';
 import { UploadFilesComponent } from './components/upload-files/upload-files.component';
@@ -19,8 +18,10 @@ import {Interceptor} from "./services/interceptor.service";
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './redux/app.effects';
 import {ActionReducer, MetaReducer, StoreModule} from '@ngrx/store';
-import {fileReducer, menuReducer} from "./redux/app.reducers";
+import {configReducer, fileReducer, menuReducer} from "./redux/app.reducers";
 import { LoadingComponent } from './components/loading/loading.component';
+import {ToastrModule} from "ngx-toastr";
+import {configs} from "./toast.config";
 
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -56,12 +57,12 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     MatInputModule,
     MatIconModule,
     MatDialogModule,
-    NgxFileDropModule,
     StoreModule.forRoot(
-      { menu : menuReducer, file: fileReducer },
+      { menu : menuReducer, file: fileReducer, config: configReducer },
       { metaReducers }
     ),
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([AppEffects]),
+    ToastrModule.forRoot(configs)
   ],
   entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent],
   exports: [ ConfigurationComponent ],

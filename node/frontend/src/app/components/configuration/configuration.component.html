@@ -1,46 +1,48 @@
-<form class="form form-md center">
-  <mat-dialog-content fxLayout="column">
+<ng-container *ngIf="(configuration$ | async)?.config as configuration">
+  <form class="form form-md center">
+    <mat-dialog-content fxLayout="column">
 
-  <h4 class="title">Configuracion del servidor</h4>
-    <mat-form-field class="input-c">
-      <input matInput type="text"
-           placeholder="Protocolo"
-           name="protocol"
-           [ngModel]="configuration?.balancer.protocol"
-           (ngModelChange)="configuration.balancer.protocol = $event">
-    </mat-form-field>
-    <mat-form-field class="input-c">
-      <input matInput type="text"
-            placeholder="Ip/nombre de servidor"
-            name="url"
-            [ngModel]="configuration?.balancer.host"
-            (ngModelChange)="configuration.balancer.host = $event">
-    </mat-form-field>
-    <mat-form-field class="input-c">
-      <input matInput type="number"
-           name="port"
-           placeholder="Puerto"
-           [ngModel]="configuration?.balancer.port"
-           (ngModelChange)="configuration.balancer.port = $event">
-     </mat-form-field>
+    <h4 class="title">Configuracion del servidor</h4>
+      <mat-form-field class="input-c">
+        <input matInput type="text"
+             placeholder="Protocolo"
+             name="protocol"
+             [ngModel]="configuration?.balancer.protocol"
+             (ngModelChange)="configuration.balancer.protocol = $event">
+      </mat-form-field>
+      <mat-form-field class="input-c">
+        <input matInput type="text"
+              placeholder="Ip/nombre de servidor"
+              name="url"
+              [ngModel]="configuration?.balancer.host"
+              (ngModelChange)="configuration.balancer.host = $event">
+      </mat-form-field>
+      <mat-form-field class="input-c">
+        <input matInput type="number"
+             name="port"
+             placeholder="Puerto"
+             [ngModel]="configuration?.balancer.port"
+             (ngModelChange)="configuration.balancer.port = $event">
+       </mat-form-field>
 
-  <h4 class="title">Configuracion del nodo</h4>
-    <mat-form-field class="input-c">
+    <h4 class="title">Configuracion del nodo</h4>
+      <mat-form-field class="input-c">
 
-        <textarea matInput rows="5" cols="80"
-                  name="folder"
-                  placeholder="carpeta compartida"
-                  [ngModel]="configuration?.sharedfolder.path"
-                  (ngModelChange)="configuration.sharedfolder.path = $event">
-         </textarea>
-     </mat-form-field>
+          <textarea matInput rows="5" cols="80"
+                    name="folder"
+                    placeholder="carpeta compartida"
+                    [ngModel]="configuration?.sharedfolder.path"
+                    (ngModelChange)="configuration.sharedfolder.path = $event">
+           </textarea>
+       </mat-form-field>
 
-  </mat-dialog-content>
-  <mat-dialog-actions class="botones">
-    <button matButton id="e111" class="btn mat-raised-button cancel"(click)="onClose(false)">Cancelar</button>
-    <button matButton class="btn mat-raised-button mat-primary submit"
-            (click)="onClose(true)"
-            id="e112">Aceptar</button>
-  </mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions class="botones">
+      <button matButton id="e111" class="btn mat-raised-button cancel"(click)="onClose(false, null)">Cancelar</button>
+      <button matButton class="btn mat-raised-button mat-primary submit"
+              (click)="onClose(true, configuration)"
+              id="e112">Aceptar</button>
+    </mat-dialog-actions>
 
-  </form>
+    </form>
+</ng-container>

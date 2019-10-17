@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {select, Store} from "@ngrx/store";
-import {getVersion} from "./redux/app.actions";
 import {ReduxService} from "./redux/redux.service";
 
 @Component({
