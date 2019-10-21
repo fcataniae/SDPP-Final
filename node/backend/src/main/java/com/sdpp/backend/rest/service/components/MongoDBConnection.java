@@ -69,7 +69,7 @@ public class MongoDBConnection{
         return docs;
     }
 
-    <T> T getEntity(Class<T> clazz, T toFind){
+    public <T> T getEntity(Class<T> clazz, T toFind){
         MongoCollection<Document> collection = database.getCollection(clazz.getCanonicalName(), Document.class);
         Document bson = anyObjectToBSONForQuery(PREF, toFind);
         FindIterable<Document> its = collection.find(bson);

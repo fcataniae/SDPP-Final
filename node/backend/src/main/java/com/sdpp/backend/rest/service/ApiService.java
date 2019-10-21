@@ -9,13 +9,24 @@ import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * Usuario: Franco
@@ -49,16 +60,22 @@ public class ApiService {
 
     @GetMapping("version")
     public Object getVersion(){
+
+
         return Collections.singletonMap("version","SDPP-Node v".concat(version));
     }
 
     @GetMapping("config/server")
     public Object getConfigurations() {
+
+
         return FileUtil.getConfig();
     }
 
     @PostMapping("config/server")
-    public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException, InterruptedException {
+    public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException {
+
+
         String previousPath = FileUtil.getSharedFolderPathName();
         FileUtil.setJsonFileOnClassLoader(json);
         String newPath = FileUtil.getSharedFolderPathName();
@@ -67,27 +84,54 @@ public class ApiService {
 
     }
 
-    @GetMapping("file/{id}")
-    public Object getFiles(@PathVariable ("id") String path){
-        return FileUtil.getBinaryFileFromPath(path);
+    @GetMapping(value = "file/{id}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Resource getFilesById(@PathVariable ("id") String name) throws IOException {
+
+
+        DocumentFile document = new DocumentFile();
+        document.setName(name);
+        document =  mongoDBConnection.getEntity(DocumentFile.class, document);
+        String finalPath = document.getMeta().getPath().concat("\\").concat(document.getName());
+        File file = new File(finalPath);
+        Path path = Paths.get(file.getAbsolutePath());
+        return new ByteArrayResource(Files.readAllBytes(path));
     }
 
-    @GetMapping("files")
-    public List<DocumentFile> getSharedList(){
-        return mongoDBConnection.getAllEntities(DocumentFile.class);
+    @GetMapping(value = "files", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel> getSharedList() throws IOException {
+
+
+        List<DocumentFile> files = mongoDBConnection.getAllEntities(DocumentFile.class);
+        Collection<EntityModel> models = new ArrayList<>();
+        for (DocumentFile f : files) {
+            EntityModel<DocumentFile> model = new EntityModel<>(f);
+            Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class).getFilesById(f.getName())).withSelfRel();
+            model.add(link);
+            models.add(model);
+        }
+        CollectionModel<EntityModel> col = new CollectionModel<>(models);
+        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class).getSharedList()).withSelfRel();
+        col.add(link);
+        return col;
     }
 
     @GetMapping("search")
-    public Object doSearch(){
+    public Object doSearch(@RequestParam LinkedHashMap params){
+
+
         return RestUtil.getObjectForUrl(FileUtil.getUrl());
     }
 
     @PostMapping("upload/file")
     public void uploadFile(@RequestParam("file") MultipartFile file){
+
+
         FileUtil.createFileToPath(file);
     }
 
     private static Cache buildCache() {
+
+
         return CustomCacheBuilder.newCache(NAMECACHE,POOLCACHE,TTLCACHE);
     }
 
