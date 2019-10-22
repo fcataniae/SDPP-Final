@@ -1,13 +1,16 @@
 package com.sdpp.backend.rest.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.service.components.MongoDBConnection;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.CustomCacheBuilder;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.ehcache.Cache;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -26,7 +29,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Usuario: Franco
@@ -121,15 +127,18 @@ public class ApiService {
             default: return MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
     }
+
     @GetMapping(value = "files")
     public CollectionModel<EntityModel> getSharedList() throws IOException {
 
 
-        List<DocumentFile> files = mongoDBConnection.getAllEntities(DocumentFile.class);
+        Collection<DocumentFile> files = mongoDBConnection.getAllEntities(DocumentFile.class);
         Collection<EntityModel> models = new ArrayList<>();
         for (DocumentFile f : files) {
             EntityModel<DocumentFile> model = new EntityModel<>(f);
-            Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class).getFilesById(f.getName())).withSelfRel();
+            Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
+                    .getFilesById(f.getName()))
+                    .withSelfRel();
             model.add(link);
             models.add(model);
         }
