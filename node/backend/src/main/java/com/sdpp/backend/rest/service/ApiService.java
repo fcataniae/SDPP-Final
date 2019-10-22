@@ -14,14 +14,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,8 +84,8 @@ public class ApiService {
 
     }
 
-    @GetMapping(value = "file/{id}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Resource getFilesById(@PathVariable ("id") String name) throws IOException {
+    @GetMapping(value = "file/{id}")
+    public ResponseEntity<Resource> getFilesById(@PathVariable ("id") String name) throws IOException {
 
 
         DocumentFile document = new DocumentFile();
@@ -94,10 +94,34 @@ public class ApiService {
         String finalPath = document.getMeta().getPath().concat("\\").concat(document.getName());
         File file = new File(finalPath);
         Path path = Paths.get(file.getAbsolutePath());
-        return new ByteArrayResource(Files.readAllBytes(path));
+        ByteArrayResource resource =  new ByteArrayResource(Files.readAllBytes(path));
+        String contentType = getMediaTypeByExtension(document.getMeta().getExtension());
+        return ResponseEntity.ok()
+                .header("Content-disposition","filename="+document.getName())
+                .header("Content-Type", contentType)
+                .body(resource);
     }
+    private String getMediaTypeByExtension(String ext) {
 
-    @GetMapping(value = "files", produces = MediaTypes.HAL_JSON_VALUE)
+        switch (ext.toLowerCase()){
+            case "pdf":
+                return MediaType.APPLICATION_PDF_VALUE;
+            case "":
+            case "txt":
+                return MediaType.TEXT_PLAIN_VALUE;
+            case "png":
+                return MediaType.IMAGE_PNG_VALUE;
+            case "jpg":
+            case "jpeg":
+                return MediaType.IMAGE_JPEG_VALUE;
+            case "xlsx":
+                return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            case "docx":
+                return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            default: return MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+    }
+    @GetMapping(value = "files")
     public CollectionModel<EntityModel> getSharedList() throws IOException {
 
 

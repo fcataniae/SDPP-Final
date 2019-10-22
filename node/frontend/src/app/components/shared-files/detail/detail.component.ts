@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {MatDialog} from "@angular/material";
+import {EmbedDialogComponent} from "../../embed-dialog/embed-dialog.component";
 
 @Component({
   selector: 'custom-detail',
@@ -7,18 +9,24 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class DetailComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog$: MatDialog) { }
 
   @Input() file: any;
   @Input() name: any;
+  @Input() item: any;
   @Input() dir: any;
-  @Output() event = new EventEmitter<any>();
 
   ngOnInit() {
   }
 
   onEvent($event){
-    this.event.emit($event);
+    $event.preventDefault();
+    var dialog = this.dialog$.open(EmbedDialogComponent, {
+      width: '90%',
+      height: '90%',
+      data: {src : this.item.links[0].href, name: this.name}
+    });
+    dialog.afterClosed().subscribe();
   }
 
 }

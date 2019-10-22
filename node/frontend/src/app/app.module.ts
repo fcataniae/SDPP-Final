@@ -22,6 +22,8 @@ import {configReducer, fileReducer, menuReducer} from "./redux/app.reducers";
 import { LoadingComponent } from './components/loading/loading.component';
 import {ToastrModule} from "ngx-toastr";
 import {configs} from "./toast.config";
+import { EmbedDialogComponent } from './components/embed-dialog/embed-dialog.component';
+import { UrlPipe } from './url-pipe.pipe';
 
 
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -47,7 +49,9 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     SearchFilesComponent,
     CustomUploadComponent,
     ConfirmacionPopupComponent,
-    LoadingComponent
+    LoadingComponent,
+    EmbedDialogComponent,
+    UrlPipe
   ],
   imports: [
     BrowserAnimationsModule,
@@ -64,7 +68,7 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     EffectsModule.forRoot([AppEffects]),
     ToastrModule.forRoot(configs)
   ],
-  entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent],
+  entryComponents: [ ConfigurationComponent, DetailComponent, ConfirmacionPopupComponent, EmbedDialogComponent],
   exports: [ ConfigurationComponent ],
   providers: [
     {

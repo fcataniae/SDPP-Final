@@ -69,7 +69,10 @@ public class FileUtil {
                     meta.setCreateTime(new Date(attr.creationTime().toMillis()));
                     meta.setModifiedTime(new Date(attr.lastModifiedTime().toMillis()));
                     meta.setSize(attr.size());
-                    meta.setExtension(doc.getName().substring(doc.getName().lastIndexOf('.') + 1));
+                    String ext = "";
+                    if(doc.getName().contains("."))
+                        ext = doc.getName().substring(doc.getName().lastIndexOf('.') + 1);
+                    meta.setExtension(ext);
                     doc.setMeta(meta);
                     files.add(doc);
                 } catch (IOException e) {

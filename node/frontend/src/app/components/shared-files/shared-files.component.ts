@@ -48,7 +48,7 @@ export class SharedFilesComponent implements OnInit, OnDestroy {
       di.instance.dir = false;
       di.instance.name = f.name;
       di.instance.file = true;
+      di.instance.item = f;
     });
   }
-
 }

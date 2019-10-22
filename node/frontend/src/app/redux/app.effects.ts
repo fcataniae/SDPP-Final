@@ -36,7 +36,7 @@ export class AppEffects {
     ofType(getAllFiles),
     switchMap(() => this.fs$.getSharedList()
         .pipe(
-          map(res => successGetAllFiles({files: Array.from(res)})),
+          map(res => successGetAllFiles({files: Array.from(res.content)})),
           catchError(err => of(errorGetAllFiles({error: err})))
         )
       )

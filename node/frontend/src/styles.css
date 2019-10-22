@@ -194,3 +194,7 @@ button.toast-close-button {
     width: 25em;
   }
 }
+.mat-dialog-container{
+  overflow-y: hidden !important;
+  padding: 0 !important;
+}
