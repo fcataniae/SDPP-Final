@@ -50,9 +50,9 @@ public class MongoDBConnection{
     void initDbWithFolderContent(){
         try {
             List<DocumentFile> docs = FileUtil.getSharedFolderList();
-            MongoCollection<Document> collection = database.getCollection(DocumentFile.class.getCanonicalName(), Document.class);
+            MongoCollection<DocumentFile> collection = database.getCollection(DocumentFile.class.getCanonicalName(), DocumentFile.class);
             collection.deleteMany(new BasicDBObject());
-            docs.forEach(doc -> collection.insertOne(anyObjectToBSON(doc)));
+            docs.forEach(collection::insertOne);
         } catch (IOException e) {
             logger.error("Error while initializing DB w folder content",e);
         }
@@ -60,20 +60,16 @@ public class MongoDBConnection{
     }
 
     public <T> List<T> getAllEntities(Class<T> clazz) {
-        MongoCollection<Document> collection = database.getCollection(clazz.getCanonicalName(), Document.class);
-        List<T> docs = new ArrayList<>();
-        FindIterable<Document> its = collection.find();
-        its.forEach((Consumer<? super Document>) document -> {
-            docs.add(anyBSONToObject(clazz, document));
-        });
-        return docs;
+        MongoCollection<T> collection = database.getCollection(clazz.getCanonicalName(), clazz);
+        FindIterable<T> its = collection.find();
+        return its.into(new ArrayList<T>());
     }
 
     public <T> T getEntity(Class<T> clazz, T toFind){
-        MongoCollection<Document> collection = database.getCollection(clazz.getCanonicalName(), Document.class);
+        MongoCollection<T> collection = database.getCollection(clazz.getCanonicalName(), clazz);
         Document bson = anyObjectToBSONForQuery(PREF, toFind);
-        FindIterable<Document> its = collection.find(bson);
-        return anyBSONToObject(clazz,its.first());
+        FindIterable<T> its = collection.find(bson);
+        return its.first();
     }
 
 
@@ -88,28 +84,6 @@ public class MongoDBConnection{
         collection.findOneAndDelete(bson);
     }
 
-    private <T> Document anyObjectToBSON(T toFind) {
-        Document bson = new Document();
-        try {
-            Class<?> clazz = toFind.getClass();
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                Object fieldObject = field.get(toFind);
-                String name = field.getName();
-                if(fieldObject != null){
-                    if(isJavaClass(fieldObject.getClass())){
-                        bson.append(name, fieldObject);
-                    }else{
-                        bson.append(name, anyObjectToBSON(fieldObject));
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            logger.warn("Error while creating BSON from object",e);
-        }
-        return bson;
-    }
 
     private <T> Document anyObjectToBSONForQuery(String prex, T toFind) {
         Document bson = new Document();
@@ -135,32 +109,6 @@ public class MongoDBConnection{
             logger.info("Error while creating query from BSON",e);
         }
         return bson;
-    }
-
-    private <T> T anyBSONToObject(Class<T> clazz, Document document) {
-        T object;
-        Constructor constructor = null;
-        try {
-            constructor = clazz.getConstructor();
-            object = (T) constructor.newInstance();
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                String name = field.getName();
-                Class<?> fClazz = field.getType();
-                if(isJavaClass(fClazz)){
-                    Object fieldObject = document.get(name, field.getType());
-                    field.set(object,fieldObject);
-                }else{
-                    Object fieldObject = anyBSONToObject(fClazz, document.get(name, Document.class));
-                    field.set(object, fieldObject);
-                }
-            }
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            logger.warn("Error while parsing BSON to object.", e);
-            throw new RuntimeException(e);
-        }
-        return object;
     }
 
     private boolean isJavaClass(Class<?> c){

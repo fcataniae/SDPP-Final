@@ -112,9 +112,6 @@ public class ApiService {
         switch (ext.toLowerCase()){
             case "pdf":
                 return MediaType.APPLICATION_PDF_VALUE;
-            case "":
-            case "txt":
-                return MediaType.TEXT_PLAIN_VALUE;
             case "png":
                 return MediaType.IMAGE_PNG_VALUE;
             case "jpg":
@@ -124,7 +121,8 @@ public class ApiService {
                 return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             case "docx":
                 return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            default: return MediaType.APPLICATION_OCTET_STREAM_VALUE;
+            default:
+                return MediaType.TEXT_PLAIN_VALUE;
         }
     }
 
