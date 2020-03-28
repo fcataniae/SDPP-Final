@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import org.ehcache.Cache;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -57,6 +58,7 @@ public class ApiService {
     @Value("${build.version}")
     private String version;
 
+    @Autowired
     public ApiService(MongoDBConnection mongoDBConnection,
                       WatcherSystemService watcherSystemService){
         this.watcherSystemService = watcherSystemService;

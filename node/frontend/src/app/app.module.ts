@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
-import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule, MatIconModule, MatDialogModule  } from '@angular/material';
@@ -78,9 +78,9 @@ export const metaReducers: MetaReducer<any>[] = [debug];
     },
     {
            provide: APP_BASE_HREF,
-           useValue: '/' + (window.location.pathname.split('/')[1] || 'desa')
+           useValue: '/'
    },
-   { provide: LocationStrategy, useClass: HashLocationStrategy }
+   { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

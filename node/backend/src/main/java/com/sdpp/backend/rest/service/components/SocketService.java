@@ -4,8 +4,7 @@ import com.sdpp.backend.rest.service.components.managers.SocketThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,18 +12,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 @Component
-public class SocketService implements ApplicationRunner {
+public class SocketService implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(SocketService.class);
     @Value("${socket.server.port}")
     private int port;
     private ServerSocket server;
+    private boolean active = true;
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        startSocketServer();
+    public void stopThread() {
+        this.active = false;
     }
-
 
     private void startSocketServer() throws IOException {
         try {
@@ -53,6 +51,11 @@ public class SocketService implements ApplicationRunner {
             Thread t = new SocketThread(client);
             logger.info("dispatching client to manager");
             t.start();
-        }while(true);
+        }while(active);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        startSocketServer();
     }
 }

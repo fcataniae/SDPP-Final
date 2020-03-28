@@ -22,13 +22,15 @@ public class WatcherSystemService implements ApplicationRunner {
     private String path;
     private static final Logger logger = LoggerFactory.getLogger(WatcherSystemService.class);
     private static WatchService watchService;
+    private static WatchKey key;
     private final static WatchEvent.Kind[] kinds = new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
             StandardWatchEventKinds.ENTRY_DELETE};
 
-    @Autowired
     private MongoDBConnection mongoDBConnection;
 
-    public WatcherSystemService(){
+    @Autowired
+    public WatcherSystemService(MongoDBConnection mongoDBConnection){
+        this.mongoDBConnection = mongoDBConnection;
     }
 
     public void startService() {
@@ -36,7 +38,7 @@ public class WatcherSystemService implements ApplicationRunner {
             path = FileUtil.getSharedFolderPathName();
             logger.info("Starting watch service at path {}", path);
             watchService = FileSystems.getDefault().newWatchService();
-            registerPath();
+            key = registerPath();
             watchEvents();
         } catch (IOException | InterruptedException e) {
             logger.warn("Error while starting watcher service in path {}",path, e );
@@ -115,13 +117,7 @@ public class WatcherSystemService implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) throws Exception{
         startService();
-    }
-
-    public static void main(String[] args) {
-        Integer e = 1;
-        Integer e2 = e + 1;
-        System.out.println(e.compareTo(e2));
     }
 }
