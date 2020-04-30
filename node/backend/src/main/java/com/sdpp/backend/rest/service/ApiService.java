@@ -1,15 +1,15 @@
 package com.sdpp.backend.rest.service;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheLoader;
+import com.sdpp.backend.rest.domain.Configuration;
 import com.sdpp.backend.rest.domain.DocumentFile;
-import com.sdpp.backend.rest.service.components.MongoDBConnection;
+import com.sdpp.backend.rest.service.components.InMemoryPathController;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.CustomCacheBuilder;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import org.ehcache.Cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,10 +30,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Usuario: Franco
@@ -46,7 +43,7 @@ import java.util.Collections;
 @CrossOrigin
 public class ApiService {
 
-    private MongoDBConnection mongoDBConnection;
+    private InMemoryPathController inMemoryPathController;
     private WatcherSystemService watcherSystemService;
 
     private static final String NAMECACHE = "querys";
@@ -59,10 +56,10 @@ public class ApiService {
     private String version;
 
     @Autowired
-    public ApiService(MongoDBConnection mongoDBConnection,
+    public ApiService(InMemoryPathController inMemoryPathController,
                       WatcherSystemService watcherSystemService){
         this.watcherSystemService = watcherSystemService;
-        this.mongoDBConnection = mongoDBConnection;
+        this.inMemoryPathController = inMemoryPathController;
     }
 
 
@@ -81,25 +78,25 @@ public class ApiService {
     }
 
     @PostMapping("config/server")
-    public void updateConfiguration(@RequestBody JsonNode json) throws IOException, URISyntaxException {
+    public void updateConfiguration(@RequestBody Configuration config) throws IOException, URISyntaxException {
 
 
         String previousPath = FileUtil.getSharedFolderPathName();
-        FileUtil.setJsonFileOnClassLoader(json);
+        FileUtil.setConfigurationFileOnRelativePathAndReload(config);
         String newPath = FileUtil.getSharedFolderPathName();
         if(!previousPath.equals(newPath))
             watcherSystemService.setNewPath();
 
     }
 
-    @GetMapping(value = "file/{id}")
-    public ResponseEntity<Resource> getFilesById(@PathVariable ("id") String name) throws IOException {
+    @GetMapping(value = "file/{checksum}")
+    public ResponseEntity<Resource> getFilesById(@PathVariable ("checksum") String checksum) throws IOException {
 
 
         DocumentFile document = new DocumentFile();
-        document.setName(name);
-        document =  mongoDBConnection.getEntity(DocumentFile.class, document);
-        String finalPath = document.getMeta().getPath().concat("\\").concat(document.getName());
+        document.setChecksum(checksum);
+        document =  inMemoryPathController.getDocument(document);
+        String finalPath = document.getMeta().getPath();
         File file = new File(finalPath);
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource =  new ByteArrayResource(Files.readAllBytes(path));
@@ -132,12 +129,12 @@ public class ApiService {
     public CollectionModel<EntityModel> getSharedList() throws IOException {
 
 
-        Collection<DocumentFile> files = mongoDBConnection.getAllEntities(DocumentFile.class);
+        Collection<DocumentFile> files = inMemoryPathController.getDocuments();
         Collection<EntityModel> models = new ArrayList<>();
         for (DocumentFile f : files) {
             EntityModel<DocumentFile> model = new EntityModel<>(f);
             Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
-                    .getFilesById(f.getName()))
+                    .getFilesById(f.getChecksum()))
                     .withSelfRel();
             model.add(link);
             models.add(model);
@@ -149,10 +146,25 @@ public class ApiService {
     }
 
     @GetMapping("search")
-    public Object doSearch(@RequestParam LinkedHashMap params){
+    public Object doSearch(@RequestParam LinkedHashMap<String,String> params){
 
+        String key = getParamsAsKey(params);
+        Object result = CACHE.getIfPresent(key);
+        if(Objects.isNull(result)){
+           result = RestUtil.getObjectForUrl("",params);
+           CACHE.put(key, result);
+        }
+        return result;
+    }
 
-        return RestUtil.getObjectForUrl(FileUtil.getUrl());
+    private String getParamsAsKey(LinkedHashMap<String, String> params) {
+        StringBuilder key = new StringBuilder();
+        params.entrySet().forEach( (k) -> {
+            if( k.getValue() != null){
+                key.append(k).append("%").append(k.getValue()).append("%%$%%");
+            }
+        });
+        return key.toString();
     }
 
     @PostMapping("upload/file")
@@ -162,10 +174,10 @@ public class ApiService {
         FileUtil.createFileToPath(file);
     }
 
-    private static Cache buildCache() {
+    private static <K, V> Cache<K, V> buildCache() {
 
 
-        return CustomCacheBuilder.newCache(NAMECACHE,POOLCACHE,TTLCACHE);
+        return CustomCacheBuilder.newCache(POOLCACHE,TTLCACHE);
     }
 
 }
