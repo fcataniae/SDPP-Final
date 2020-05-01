@@ -24,7 +24,7 @@ export class DetailComponent implements OnInit {
     var dialog = this.dialog$.open(EmbedDialogComponent, {
       width: '90%',
       height: '90%',
-      data: {src : this.item.links[0].href, name: this.name}
+      data: {src : this.item._links.self.href, name: this.name}
     });
     dialog.afterClosed().subscribe();
   }

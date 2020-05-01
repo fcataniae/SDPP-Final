@@ -1,0 +1,17 @@
+spring:
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+server:
+  port: 8081
+
+socket:
+  server:
+    port: 9999
+    threadPool: 200
+
+build:
+    version: @project.version@
+

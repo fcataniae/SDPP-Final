@@ -2,7 +2,7 @@ package com.sdpp.backend.rest.service.components.managers;
 
 import java.net.Socket;
 
-public class SocketThread extends Thread {
+public class SocketThread implements Runnable {
 
     private final Socket client;
 

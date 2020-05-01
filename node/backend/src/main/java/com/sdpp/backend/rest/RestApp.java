@@ -1,14 +1,16 @@
 package com.sdpp.backend.rest;
 
-import com.sdpp.backend.rest.domain.Configuration;
-import com.sdpp.backend.rest.service.components.InMemoryPathController;
+import com.sdpp.backend.rest.service.components.SocketService;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
-import com.sdpp.backend.rest.util.FileUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
-import java.util.Properties;
+import java.util.TreeMap;
 
 /**
  * Usuario: Franco
@@ -16,7 +18,7 @@ import java.util.Properties;
  * Fecha: 6/8/2019
  **/
 @SpringBootApplication
-public class RestApp {
+public class RestApp implements CommandLineRunner {
 
     public static void main(String[] args) {
 
@@ -24,4 +26,14 @@ public class RestApp {
 
     }
 
+    @Autowired
+    private SocketService socketService;
+    @Autowired
+    private WatcherSystemService watcherSystemService;
+
+    @Override
+    public void run(String... args) throws Exception {
+        new Thread(watcherSystemService).start();
+        new Thread(socketService).start();
+    }
 }

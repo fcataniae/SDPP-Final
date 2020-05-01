@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -15,7 +16,8 @@ import java.io.IOException;
 import java.nio.file.*;
 
 @Component
-public class WatcherSystemService implements ApplicationRunner {
+@Order(1)
+public class WatcherSystemService implements Runnable {
 
     private String path;
     private static final Logger logger = LoggerFactory.getLogger(WatcherSystemService.class);
@@ -112,7 +114,7 @@ public class WatcherSystemService implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception{
+    public void run() {
         startService();
     }
 }

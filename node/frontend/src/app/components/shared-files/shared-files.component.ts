@@ -28,6 +28,7 @@ export class SharedFilesComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(res => {
+        console.log(res);
         this.sharedfiles = res;
         this.load();
         this.loading = true;
@@ -41,14 +42,16 @@ export class SharedFilesComponent implements OnInit, OnDestroy {
   }
 
   load(){
-    const factory = this.resolver$.resolveComponentFactory(DetailComponent);
-    this.entry.clear();
-    this.sharedfiles.forEach( f => {
-      var di = this.entry.createComponent(factory);
-      di.instance.dir = false;
-      di.instance.name = f.name;
-      di.instance.file = true;
-      di.instance.item = f;
-    });
+    if(this.sharedfiles) {
+      const factory = this.resolver$.resolveComponentFactory(DetailComponent);
+      this.entry.clear();
+      this.sharedfiles.forEach(f => {
+        var di = this.entry.createComponent(factory);
+        di.instance.dir = false;
+        di.instance.name = f.name;
+        di.instance.file = true;
+        di.instance.item = f;
+      });
+    }
   }
 }
