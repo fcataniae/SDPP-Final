@@ -22,6 +22,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -151,8 +152,8 @@ public class ApiService {
                 .withSelfRel();
     }
 
-    @GetMapping("search")
-    public Object doSearch(@RequestParam LinkedHashMap<String,String> params){
+    @GetMapping("search/files")
+    public Object doSearch(@RequestParam LinkedMultiValueMap<String,String> params){
 
         String key = getParamsAsKey(params);
         Object result = CACHE.getIfPresent(key);
@@ -171,11 +172,11 @@ public class ApiService {
         return balancer.getEndpoint().concat(searchPath);
     }
 
-    private String getParamsAsKey(LinkedHashMap<String, String> params) {
+    private String getParamsAsKey(LinkedMultiValueMap<String, String> params) {
         StringBuilder key = new StringBuilder();
         params.entrySet().forEach( (k) -> {
             if( k.getValue() != null){
-                key.append(k).append("%").append(k.getValue()).append("%%$%%");
+                key.append(k).append("%%$%%");
             }
         });
         return key.toString();

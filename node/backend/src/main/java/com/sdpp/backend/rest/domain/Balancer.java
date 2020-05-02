@@ -35,6 +35,6 @@ public class Balancer {
     }
 
     public String getEndpoint() {
-        return protocol.concat("//").concat(host).concat(":").concat(port);
+        return protocol.concat("://").concat(host).concat(":").concat(port);
     }
 }

@@ -19,10 +19,9 @@ export class SearchFilesComponent implements OnInit {
 
     var max = 10;
 
-    for(let i = 0; i< max;i++)
-
-    this._HTTP.doSearch(this.params).subscribe( res=>{
-
+    //for(let i = 0; i< max;i++)
+    this._HTTP.doSearch({name: "IMG_20191127_122140667"}).subscribe( res=>{
+      console.log(res);
     });
 
   }

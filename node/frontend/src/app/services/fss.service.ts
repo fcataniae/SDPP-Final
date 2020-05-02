@@ -19,30 +19,12 @@ constructor( private _HTTP: HttpClient) { }
     return this._HTTP.get<any>( environment.BACKEND_URL + 'file/' + path);
   }
 
-  public doSearch(params: any[]){
-    return this._HTTP.get<any>(environment.BACKEND_URL + 'searchs?' + FssService.buildParams(params) );
+  public doSearch(params){
+    return this._HTTP.get<any>(environment.BACKEND_URL + 'search/files',{ params: params } );
   }
 
   public getUploadUrl(): string{
     return environment.BACKEND_URL + 'upload/file';
   }
 
-
-  private static buildParams(params: any[]) : string{
-
-    var searchParam = '';
-
-    var index = 0;
-    var maxIndex = params.length;
-
-    do{
-      searchParam += params[index].key + '=' + params[index].value;
-      index++;
-      if(index < maxIndex)
-        searchParam += '&';
-    }while(index < maxIndex);
-
-
-    return searchParam;
-  }
 }
