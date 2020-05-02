@@ -1,7 +1,7 @@
 package com.sdpp.backend.rest.service;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheLoader;
+import com.sdpp.backend.rest.domain.Balancer;
 import com.sdpp.backend.rest.domain.Configuration;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.domain.Sha256;
@@ -40,19 +40,19 @@ import java.util.*;
  **/
 
 @RestController
-@RequestMapping(("/rest/api"))
+@RequestMapping(("/node-api"))
 @CrossOrigin
 public class ApiService {
 
     private InMemoryPathController inMemoryPathController;
     private WatcherSystemService watcherSystemService;
 
-    private static final String NAMECACHE = "querys";
     private static final int POOLCACHE = 400;
     private static final int TTLCACHE = 60;
-
     private static Cache CACHE = buildCache();
 
+    @Value("${balancer.rest.search.url}")
+    private String searchPath;
     @Value("${build.version}")
     private String version;
 
@@ -135,9 +135,7 @@ public class ApiService {
         Collection<DocumentFile> documentFiles = files.values();
         for (DocumentFile f : documentFiles) {
             EntityModel<DocumentFile> model = new EntityModel<>(f);
-            Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
-                    .getFilesById(f.getSha256().getHashed()))
-                    .withSelfRel();
+            Link link = getLinkForDocumentFile(f);
             model.add(link);
             models.add(model);
         }
@@ -147,16 +145,30 @@ public class ApiService {
         return col;
     }
 
+    public static Link getLinkForDocumentFile(DocumentFile f) throws IOException {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
+                .getFilesById(f.getSha256().getHashed()))
+                .withSelfRel();
+    }
+
     @GetMapping("search")
     public Object doSearch(@RequestParam LinkedHashMap<String,String> params){
 
         String key = getParamsAsKey(params);
         Object result = CACHE.getIfPresent(key);
         if(Objects.isNull(result)){
-           result = RestUtil.getObjectForUrl("",params);
-           CACHE.put(key, result);
+            String url = getBalancerEndpoint();
+            result = RestUtil.getObjectForUrl(url,params);
+            CACHE.put(key, result);
         }
         return result;
+    }
+
+    private String getBalancerEndpoint() {
+
+        Configuration config = FileUtil.getConfig();
+        Balancer balancer = config.getBalancer();
+        return balancer.getEndpoint().concat(searchPath);
     }
 
     private String getParamsAsKey(LinkedHashMap<String, String> params) {

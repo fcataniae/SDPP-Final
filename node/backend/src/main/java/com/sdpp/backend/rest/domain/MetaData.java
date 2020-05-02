@@ -12,11 +12,11 @@ public class MetaData implements Serializable {
     private String path;
     private Long size;
 
-    public Date getCreateTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreatedTime(Date createTime) {
         this.createdTime = createTime;
     }
 

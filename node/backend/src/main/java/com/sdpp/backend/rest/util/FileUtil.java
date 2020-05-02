@@ -3,6 +3,9 @@ package com.sdpp.backend.rest.util;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdpp.backend.rest.domain.*;
+import com.sdpp.backend.rest.domain.DocumentFile;
+import com.sdpp.backend.rest.domain.MetaData;
+import com.sdpp.backend.rest.domain.Sha256;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -13,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -69,7 +71,7 @@ public class FileUtil {
             doc.setName(file.getName());
             MetaData meta = new MetaData();
             meta.setPath(file.getPath());
-            meta.setCreateTime(new Date(attr.creationTime().toMillis()));
+            meta.setCreatedTime(new Date(attr.creationTime().toMillis()));
             meta.setModifiedTime(new Date(attr.lastModifiedTime().toMillis()));
             meta.setSize(attr.size());
             String ext = "";
@@ -163,7 +165,6 @@ public class FileUtil {
         url = url + DOTS + SEPARATOR + SEPARATOR;
         url = url + balancer.getHost() + DOTS;
         url = url + balancer.getPort() + SEPARATOR;
-        url = url + balancer.getPath();
 
         return url;
     }

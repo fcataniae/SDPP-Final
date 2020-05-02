@@ -1,16 +1,11 @@
 package com.sdpp.backend.rest;
 
-import com.sdpp.backend.rest.service.components.SocketService;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
+import com.sdpp.backend.rest.socket.PeerServerController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-
-import java.util.TreeMap;
 
 /**
  * Usuario: Franco
@@ -27,13 +22,13 @@ public class RestApp implements CommandLineRunner {
     }
 
     @Autowired
-    private SocketService socketService;
+    private PeerServerController peerServerController;
     @Autowired
     private WatcherSystemService watcherSystemService;
 
     @Override
     public void run(String... args) throws Exception {
         new Thread(watcherSystemService).start();
-        new Thread(socketService).start();
+        new Thread(peerServerController).start();
     }
 }

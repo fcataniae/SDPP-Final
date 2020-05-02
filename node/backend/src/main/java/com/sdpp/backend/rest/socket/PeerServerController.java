@@ -1,12 +1,10 @@
-package com.sdpp.backend.rest.service.components;
+package com.sdpp.backend.rest.socket;
 
 import com.sdpp.backend.rest.service.components.managers.SocketThread;
+import com.sdpp.backend.rest.socket.managers.MasterConexionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +16,9 @@ import java.util.concurrent.Executors;
 
 @Component
 @Order(2)
-public class SocketService implements Runnable {
+public class PeerServerController implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(SocketService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PeerServerController.class);
 
     @Value("${socket.server.port}")
     private int port;
@@ -36,7 +34,7 @@ public class SocketService implements Runnable {
         this.active = false;
     }
 
-    public SocketService(){
+    public PeerServerController(){
 
         super();
     }
@@ -44,6 +42,7 @@ public class SocketService implements Runnable {
     private void startSocketServer() throws IOException {
         try {
             start();
+            doConnectToMaster();
             manageConnections();
         } catch (IOException e) {
             logger.error("Error while starting server at port {}",port,e);
@@ -51,6 +50,13 @@ public class SocketService implements Runnable {
             logger.info("Clossing socket server...");
             server.close();
         }
+    }
+
+    private void doConnectToMaster() {
+
+        logger.info("connecting to master");
+        MasterConexionManager conex = new MasterConexionManager();
+        executorService.execute(conex);
     }
 
     private void start() throws IOException {

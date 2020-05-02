@@ -1,8 +1,9 @@
 package com.sdpp.backend.rest.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Sha256 {
+public class Sha256 implements Serializable {
 
     private String hashed;
 

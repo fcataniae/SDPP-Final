@@ -17,7 +17,7 @@ public class RestUtil {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Object> response
-                = restTemplate.getForEntity(url, Object.class);
+                = restTemplate.getForEntity(url, Object.class, params);
         if(!response.getStatusCode().equals(HttpStatus.OK))
             throw new RuntimeException("Couldn't retrieve information from URL " + url + " Response: " + response.toString() );
 

@@ -12,6 +12,11 @@ socket:
     port: 9999
     threadPool: 200
 
+balancer:
+  rest:
+    search:
+      url: /balancer-api/search/files
+
 build:
     version: @project.version@
 
