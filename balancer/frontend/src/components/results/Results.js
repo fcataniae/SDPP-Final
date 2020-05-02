@@ -1,5 +1,10 @@
 import React from "react";
 import './Results.css';
+import {DocumentResult} from "./documents/DocumentResult";
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+
 export default class Results extends React.Component {
 
     constructor(props){
@@ -11,31 +16,36 @@ export default class Results extends React.Component {
         }
     }
     render = () => {
-
-        let elements = this.state.data.map( (element) => {
-           let type;
-
-           switch (element.type) {
-               case 'PDF':
-                   type = <div className="rounded mx-auto d-block pdf-miniature"></div> ;
-                   break;
-
-               case 'TXT':
-                   type = <div className=" rounded mx-auto d-block txt-miniature"></div> ;
-                   break;
-               case 'DOCX':
-                   type = <div className="rounded mx-auto d-block docx-miniature"></div> ;
-                   break;
-           }
-            return  <div>{type}
-                <div>{element.name}</div>
-                <div>{element.node}</div>
-                    </div>
-
-        });
-
-        return <div>{elements}</div>
-
+        return (
+            <RenderResults results={this.state.data}/>
+            );
     }
 }
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    documentResult: {
+        padding: '0.65rem!important',
+        display: 'inline',
+    },
+}));
+
+
+export const RenderResults = ({results}) => {
+
+    const classes = useStyles();
+
+
+    return (
+
+        <Grid container className={classes.root} spacing={1}>
+                {results.map((element,index) => (
+                    <Grid item xs key={index} className={classes.documentResult} >
+                            <DocumentResult  result={element}/>
+                    </Grid>
+                ))}
+        </Grid>
+    )
+};
