@@ -40,6 +40,7 @@ public class WatcherSystemService implements Runnable {
                 watchService = FileSystems.getDefault().newWatchService();
                 registerPath();
                 watchEvents();
+                logger.info("watch service started at path {}", path);
             }else{
                 logger.info("Watcher service doesn't start cause of empty path, waiting for update in configuration...");
             }

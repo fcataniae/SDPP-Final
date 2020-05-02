@@ -2,15 +2,13 @@ package com.sdpp.backend.rest.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdpp.backend.rest.domain.Balancer;
-import com.sdpp.backend.rest.domain.Configuration;
-import com.sdpp.backend.rest.domain.DocumentFile;
-import com.sdpp.backend.rest.domain.MetaData;
+import com.sdpp.backend.rest.domain.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,9 +16,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Usuario: Franco
@@ -81,22 +77,22 @@ public class FileUtil {
                 ext = doc.getName().substring(doc.getName().lastIndexOf('.') + 1);
             meta.setExtension(ext);
             doc.setMeta(meta);
-            doc.setChecksum(checksum(file));
+            doc.setSha256(checksum(file.getPath()));
         }catch (NoSuchAlgorithmException e){
-            doc.setChecksum(p.toAbsolutePath().toString());
+            doc.setSha256(new Sha256(p.toAbsolutePath().toString()));
         }
         return doc;
     }
 
-    public static List<DocumentFile> getSharedFolderList() throws IOException {
+    public static Map<Sha256, DocumentFile> getSharedFolderList() throws IOException {
         String path = getSharedFolderPathName();
-        List<DocumentFile> files = new ArrayList<>();
+        Map<Sha256, DocumentFile> files = new HashMap<>();
         Files.walk(Paths.get(path)).forEach( p -> {
             if(Files.isRegularFile(p)){
                 try {
 
                     DocumentFile doc = createDocumentFile(p);
-                    files.add(doc);
+                    files.put(doc.getSha256(), doc);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -105,20 +101,15 @@ public class FileUtil {
         return files;
     }
 
-    private static String checksum(File file) throws IOException, NoSuchAlgorithmException {
+    private static Sha256 checksum(String file) throws  NoSuchAlgorithmException {
 
-         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(file), md)) {
-            while (dis.read() != -1) ; //empty loop to clear the data
-            md = dis.getMessageDigest();
-        }
-
-        // bytes to hex
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(file.getBytes(StandardCharsets.UTF_8));
         StringBuilder result = new StringBuilder();
-        for (byte b : md.digest()) {
+        for (byte b : hash) {
             result.append(String.format("%02x", b));
         }
-        return result.toString();
+        return new Sha256(result.toString());
 
     }
 

@@ -6,32 +6,33 @@ import java.util.Objects;
 public class DocumentFile implements Serializable {
 
     private String name;
-    private String checksum;
     private MetaData meta;
+    private Sha256 sha256;
 
     public DocumentFile() {
         meta = new MetaData();
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DocumentFile that = (DocumentFile) o;
-        return checksum.equals(that.checksum);
+        return Objects.equals(sha256, that.sha256);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(checksum);
+        return Objects.hash(sha256);
     }
 
-    public String getChecksum() {
-        return checksum;
+    public Sha256 getSha256() {
+        return sha256;
     }
 
-    public void setChecksum(String checksum) {
-        this.checksum = checksum;
+    public void setSha256(Sha256 sha256) {
+        this.sha256 = sha256;
     }
 
     public String getName() {

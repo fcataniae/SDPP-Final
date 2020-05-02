@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheLoader;
 import com.sdpp.backend.rest.domain.Configuration;
 import com.sdpp.backend.rest.domain.DocumentFile;
+import com.sdpp.backend.rest.domain.Sha256;
 import com.sdpp.backend.rest.service.components.InMemoryPathController;
 import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.CustomCacheBuilder;
@@ -94,7 +95,7 @@ public class ApiService {
 
 
         DocumentFile document = new DocumentFile();
-        document.setChecksum(checksum);
+        document.setSha256(new Sha256(checksum));
         document =  inMemoryPathController.getDocument(document);
         String finalPath = document.getMeta().getPath();
         File file = new File(finalPath);
@@ -129,12 +130,13 @@ public class ApiService {
     public CollectionModel<EntityModel> getSharedList() throws IOException {
 
 
-        Collection<DocumentFile> files = inMemoryPathController.getDocuments();
+        Map<Sha256, DocumentFile> files = inMemoryPathController.getDocuments();
         Collection<EntityModel> models = new ArrayList<>();
-        for (DocumentFile f : files) {
+        Collection<DocumentFile> documentFiles = files.values();
+        for (DocumentFile f : documentFiles) {
             EntityModel<DocumentFile> model = new EntityModel<>(f);
             Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
-                    .getFilesById(f.getChecksum()))
+                    .getFilesById(f.getSha256().getHashed()))
                     .withSelfRel();
             model.add(link);
             models.add(model);
