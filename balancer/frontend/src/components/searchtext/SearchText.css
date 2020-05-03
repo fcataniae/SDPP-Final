@@ -1,5 +1,14 @@
-.search-component{
+.search-component-center{
     padding: 15px;
     margin: 10px;
     align-content: center;
+}
+
+.search-component-left{
+    padding: 15px;
+    margin: 10px;
+    align-content: flex-start;
+}
+.p-top-1{
+    padding-top: 0.5rem!important;
 }

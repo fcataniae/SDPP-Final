@@ -1,25 +1,39 @@
 import React from 'react';
 import './SearchText.css';
 import { Form, FormControl, Button } from 'react-bootstrap';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+
 
 class SearchText extends React.Component {
 
     criteria =[
-        'extension',
-        'tamaño',
-        'fecha creacion',
-        'nombre'
+        { placeholder: 'Extension', name: 'extension', value: ''},
+        { placeholder: 'Mayor a|Menor a', name: 'sizeFiter', value: ''},
+        { placeholder: 'Tamaño', name: 'size', value: 0},
+        { placeholder: 'Fecha Creacion', name: 'createdTime', value: ''},
+        { placeholder: 'Fecha Modificacion', name: 'modifiedTime', value: ''},
+        { placeholder: 'Autor', name: 'author', value: ''},
     ];
 
     constructor(props){
         super(props);
         this.state = {
             results: [],
+            criteria: this.criteria,
             searchText: '',
+            align: 'ml-auto',
+        };
+
+        if(this.isNotNullBlankOrUndefined(this.props.fix) && this.props.fix === 'left'){
+            this.state.align =  'ml-2';
         }
-        console.log(this.criteria);
     }
+
+    isNotNullBlankOrUndefined(fix) {
+
+        return fix != null && fix && fix.trim() !== '';
+    }
+
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -27,7 +41,10 @@ class SearchText extends React.Component {
     }
 
     fetchData = () => {
-        fetch(`http://localhost:9000/balancer-api/search/files?name=${this.state.searchText}`)
+        let url = new URL('http://localhost:9000/balancer-api/search/files');
+        url.searchParams.append('name', this.state.searchText);
+        this.state.criteria.forEach(o => url.searchParams.append(o.name, o.value));
+        fetch(url)
             .then(
                 (res) => res.json()
             ).then(
@@ -35,11 +52,14 @@ class SearchText extends React.Component {
                     this.setState({results: data});
                     this.redirect();
                 }
-            );
+            ).catch((reason) => {
+                console.log(reason);
+        });
     }
 
     redirect = () => {
         let results = this.state.results;
+        console.log(this.state.criteria);
         this.props.history.push('/results', { results });
     }
 
@@ -49,16 +69,30 @@ class SearchText extends React.Component {
     }
     render(){
         return (
-            <div className="search-component m-auto">
-                <Form onSubmit={this.handleSubmit} className="form-inline">
-                    <FormControl type="text" placeholder="Busqueda" className="text-md-center w-50 ml-auto mr-2"
+            <div className='search-component m-auto'>
+                <Form onSubmit={this.handleSubmit} className='form-inline'>
+                    <FormControl type='text' placeholder='Busqueda' className={`text-md-left w-50 ${this.state.align} mr-2`}
                                  value={this.state.searchText} onChange={this.handleChange}
                     />
-                    <Button type="submit" variant="outline-success" className="mr-auto "  >Buscar</Button>
+                    <Button type='submit' variant='outline-success' className='mr-auto '  >Buscar</Button>
                 </Form>
+                <AdvancedSearch criteria={this.state.criteria} align={this.state.align} ></AdvancedSearch>
+                <ShowResults results={this.props.location}></ShowResults>
             </div>
         );
     }
+}
+
+export const ShowResults = ({results}) => {
+    console.log(results);
+    let show = results && results.state && results.state.results;
+    let toRender = show ? <div className='ml-2 MuiTypography-body2'>Mostrando {results.state.results.length || 0} resultados</div>: null;
+
+    return toRender;
+}
+
+export const AdvancedSearch = ({criteria, align}) => {
+    return <div className={align}>criteria</div>;
 }
 
 export default withRouter(SearchText);

@@ -5,6 +5,7 @@ import com.sdpp.balancer.rest.domain.DocumentFile;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -27,10 +28,10 @@ public class SearchManager implements Callable<List<DocumentFile>> {
     public List<DocumentFile> call() throws Exception {
 
         filteredDocuments = documents.stream()
-                .filter(d -> params.get("name") == null || d.getName().contains(params.get("name")))
-                .filter(d -> params.get("author") == null || d.getMeta().getAuthor().contains(params.get("author")))
+                .filter(d -> isNullOrBlank(params.get("name")) || d.getName().contains(params.get("name")))
+                .filter(d -> isNullOrBlank(params.get("author")) || d.getMeta().getAuthor().contains(params.get("author")))
                 .filter(d -> {
-                    if(params.get("sizeFiter") == null) return true;
+                    if(isNullOrBlank(params.get("sizeFiter"))) return true;
                     int size = Integer.parseInt(params.get("size"));
                     if(params.get("sizeFiter").equalsIgnoreCase("minor")){
                         return d.getMeta().getSize() < size;
@@ -41,5 +42,10 @@ public class SearchManager implements Callable<List<DocumentFile>> {
                 .collect(Collectors.toList());
 
         return filteredDocuments;
+    }
+
+    private boolean isNullOrBlank(String val){
+
+        return Objects.isNull(val) || val.trim().equals("");
     }
 }

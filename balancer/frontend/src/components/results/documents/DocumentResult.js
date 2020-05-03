@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -45,13 +45,13 @@ export const DocumentResult = ({result}) => {
         setExpanded(!expanded);
     };
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    const creationDate = new Date(result.meta.createdTime).toLocaleDateString("en-US", options);
-    const modificationTime = new Date(result.meta.modifiedTime).toLocaleDateString("en-US", options);
+    const creationDate = new Date(result.meta.createdTime).toLocaleDateString('en-US', options);
+    const modificationTime = new Date(result.meta.modifiedTime).toLocaleDateString('en-US', options);
     return (
         <Card className={classes.root}>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
+                    <Avatar aria-label='recipe' className={classes.avatar}>
                         {result.meta.extension.toUpperCase()}
                     </Avatar>
                 }
@@ -59,9 +59,9 @@ export const DocumentResult = ({result}) => {
                 subheader={`Fecha ${creationDate}`}
             />
             <CardActions disableSpacing>
-                <a href={result.link} download target="_blank">
+                <a href={result.link} download target='_blank' rel='noopener noreferrer'>
                     <IconButton
-                        aria-label="download"
+                        aria-label='download'
                     >
                         <GetAppIcon />
                     </IconButton>
@@ -72,12 +72,12 @@ export const DocumentResult = ({result}) => {
                     })}
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
-                    aria-label="show more"
+                    aria-label='show more'
                 >
                     <ExpandMoreIcon />
                 </IconButton>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={expanded} timeout='auto' unmountOnExit>
                 <CardContent>
                     <Typography paragraph>Modificacion: {modificationTime} </Typography>
                     <Typography paragraph>Autor: {result.meta.author} </Typography>

@@ -3,21 +3,20 @@ import './Results.css';
 import {DocumentResult} from "./documents/DocumentResult";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Container from "@material-ui/core/Container";
+import SearchText from "../searchtext/SearchText";
 
 
 export default class Results extends React.Component {
 
-    constructor(props){
-        super(props);
-        this.state = { data : [] };
-        if(this.props.location.state){
-            this.state.data = this.props.location.state.results;
-            console.log(this.state.data);
-        }
-    }
     render = () => {
+        let show = this.props.location.state.results.length !== 0;
+        let toRender = show ? <RenderResults results={this.props.location.state.results}/> : null;
         return (
-            <RenderResults results={this.state.data}/>
+            <Container fixed className='p-top-2'>
+                <SearchText fix="left"></SearchText>
+                {toRender}
+            </Container>
             );
     }
 }
