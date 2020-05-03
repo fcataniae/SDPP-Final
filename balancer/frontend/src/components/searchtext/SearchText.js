@@ -2,6 +2,7 @@ import React from 'react';
 import './SearchText.css';
 import { Form, FormControl, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
+import logo from "../../logo.svg";
 
 
 class SearchText extends React.Component {
@@ -71,16 +72,27 @@ class SearchText extends React.Component {
         return (
             <div className='search-component m-auto'>
                 <Form onSubmit={this.handleSubmit} className='form-inline'>
+                    <Logo align={this.props.fix}/>
                     <FormControl type='text' placeholder='Busqueda' className={`text-md-left w-50 ${this.state.align} mr-2`}
                                  value={this.state.searchText} onChange={this.handleChange}
                     />
                     <Button type='submit' variant='outline-success' className='mr-auto '  >Buscar</Button>
                 </Form>
-                <AdvancedSearch criteria={this.state.criteria} align={this.state.align} ></AdvancedSearch>
-                <ShowResults results={this.props.location}></ShowResults>
+                <AdvancedSearch criteria={this.state.criteria} align={this.state.align} />
+                <ShowResults results={this.props.location}/>
             </div>
         );
     }
+}
+
+export const Logo = ({align}) => {
+
+    let show = align === 'left';
+    let toRender = show ? <a href='/'>
+        <img className='left-logo' src={logo} alt="logo"/>
+    </a>: null;
+
+    return toRender;
 }
 
 export const ShowResults = ({results}) => {

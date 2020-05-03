@@ -12,3 +12,9 @@
 .p-top-1{
     padding-top: 0.5rem!important;
 }
+.left-logo{
+    width: auto;
+    height: auto;
+    max-width: 5rem;
+    max-height: 5rem;
+}

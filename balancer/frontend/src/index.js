@@ -5,7 +5,7 @@ import './index.css';
 import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
 import Routes from "./components/router/Routes";
-
+import './reset.css';
 
 
 ReactDOM.render(

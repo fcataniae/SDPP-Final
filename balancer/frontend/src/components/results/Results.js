@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from "@material-ui/core/Container";
 import SearchText from "../searchtext/SearchText";
+import logo from "../../logo.svg";
 
 
 export default class Results extends React.Component {
@@ -14,7 +15,9 @@ export default class Results extends React.Component {
         let toRender = show ? <RenderResults results={this.props.location.state.results}/> : null;
         return (
             <Container fixed className='p-top-2'>
-                <SearchText fix="left"></SearchText>
+                <div className='inline'>
+                    <SearchText fix="left"/>
+                </div>
                 {toRender}
             </Container>
             );

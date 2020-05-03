@@ -12,3 +12,7 @@
 .p-top-2{
     padding-top: 0.65rem!important;
 }
+
+.inline{
+    display: inline!important;
+}
