@@ -73,10 +73,10 @@ class SearchText extends React.Component {
             <div className='search-component m-auto'>
                 <Form onSubmit={this.handleSubmit} className='form-inline'>
                     <Logo align={this.props.fix}/>
-                    <FormControl type='text' placeholder='Busqueda' className={`text-md-left w-50 ${this.state.align} mr-2`}
+                    <FormControl type='text' placeholder='Busqueda' className={`text-md-left w-50 ${this.state.align} mr-2 typograph`}
                                  value={this.state.searchText} onChange={this.handleChange}
                     />
-                    <Button type='submit' variant='outline-success' className='mr-auto '  >Buscar</Button>
+                    <Button type='submit' variant='outline-success' className='mr-auto typograph'  >Buscar</Button>
                 </Form>
                 <AdvancedSearch criteria={this.state.criteria} align={this.state.align} />
                 <ShowResults results={this.props.location}/>
@@ -97,7 +97,7 @@ export const ShowResults = ({results}) => {
     console.log(results);
     let show = results && results.state && results.state.results;
     return show ?
-        <div className='ml-2 MuiTypography-body2'>Mostrando {results.state.results.length || 0} resultados</div> : null;
+        <div className='ml-2 typograph'>Mostrando {results.state.results.length || 0} resultados</div> : null;
 }
 
 export const AdvancedSearch = ({criteria, align}) => {

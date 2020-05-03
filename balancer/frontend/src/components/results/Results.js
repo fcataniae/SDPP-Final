@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Container from "@material-ui/core/Container";
 import SearchText from "../searchtext/SearchText";
-import logo from "../../logo.svg";
 
 
 export default class Results extends React.Component {
