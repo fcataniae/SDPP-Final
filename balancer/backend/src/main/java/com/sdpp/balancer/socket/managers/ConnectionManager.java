@@ -81,9 +81,7 @@ public class ConnectionManager implements Runnable{
 
     private void addDocuments(Operation operation) throws IOException {
 
-        Host host = new Host();
-        host.setIp(client.getInetAddress().getCanonicalHostName());
-        host.setPort(client.getPort());
+        Host host = operation.getHost();
         documents.put(host, new ArrayList<>(operation.getDocuments()));
         DataOutputStream os = new DataOutputStream(client.getOutputStream());
         OperationResponse resp = new OperationResponse();

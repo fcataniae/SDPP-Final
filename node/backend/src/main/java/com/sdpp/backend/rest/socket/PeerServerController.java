@@ -24,6 +24,8 @@ public class PeerServerController implements Runnable {
     private int port;
     @Value("${socket.server.threadPool}")
     private int pool;
+    @Value("${server.port}")
+    private int restPort;
 
     private ServerSocket server;
     private boolean active = true;
@@ -55,7 +57,7 @@ public class PeerServerController implements Runnable {
     private void doConnectToMaster() {
 
         logger.info("connecting to master");
-        MasterConexionManager conex = new MasterConexionManager();
+        MasterConexionManager conex = new MasterConexionManager(port, restPort);
         executorService.execute(conex);
     }
 

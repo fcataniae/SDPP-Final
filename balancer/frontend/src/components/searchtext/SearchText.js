@@ -1,7 +1,7 @@
 import React from 'react';
 import './SearchText.css';
-import { Form, FormControl, Button } from 'react-bootstrap';
-import { withRouter } from 'react-router-dom';
+import {Button, Form, FormControl} from 'react-bootstrap';
+import {withRouter} from 'react-router-dom';
 import logo from "../../logo.svg";
 
 
@@ -88,19 +88,16 @@ class SearchText extends React.Component {
 export const Logo = ({align}) => {
 
     let show = align === 'left';
-    let toRender = show ? <a href='/'>
+    return show ? <a href='/'>
         <img className='left-logo' src={logo} alt="logo"/>
-    </a>: null;
-
-    return toRender;
+    </a> : null;
 }
 
 export const ShowResults = ({results}) => {
     console.log(results);
     let show = results && results.state && results.state.results;
-    let toRender = show ? <div className='ml-2 MuiTypography-body2'>Mostrando {results.state.results.length || 0} resultados</div>: null;
-
-    return toRender;
+    return show ?
+        <div className='ml-2 MuiTypography-body2'>Mostrando {results.state.results.length || 0} resultados</div> : null;
 }
 
 export const AdvancedSearch = ({criteria, align}) => {

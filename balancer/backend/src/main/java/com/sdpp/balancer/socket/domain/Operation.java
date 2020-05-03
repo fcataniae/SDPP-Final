@@ -9,10 +9,18 @@ import java.util.Collection;
 public class Operation implements Serializable {
 
     private Transaction transaction;
-    Collection<DocumentFile> documents;
-
+    private Collection<DocumentFile> documents;
+    private Host host;
 
     public Operation() {
+    }
+
+    public Host getHost() {
+        return host;
+    }
+
+    public void setHost(Host host) {
+        this.host = host;
     }
 
     public Collection<DocumentFile> getDocuments() {

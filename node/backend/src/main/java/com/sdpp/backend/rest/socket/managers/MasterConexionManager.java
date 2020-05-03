@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.service.ApiService;
 import com.sdpp.backend.rest.socket.domain.DocumentFileSocket;
+import com.sdpp.backend.rest.socket.domain.Host;
 import com.sdpp.backend.rest.socket.domain.Operation;
 import com.sdpp.backend.rest.socket.domain.OperationResponse;
 import com.sdpp.backend.rest.socket.domain.enums.Transaction;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -24,7 +26,15 @@ public class MasterConexionManager implements Runnable{
 
     private static Logger logger = LoggerFactory.getLogger(MasterConexionManager.class);
     private static int defaultport = 9001;
+    private final int restPort;
+    private final int serverPort;
     private ObjectMapper om = new ObjectMapper();
+
+
+    public MasterConexionManager(int serverPort, int restPort) {
+        this.restPort = restPort;
+        this.serverPort = serverPort;
+    }
 
     @Override
     public void run() {
@@ -38,10 +48,11 @@ public class MasterConexionManager implements Runnable{
             for (DocumentFile d : documents) {
                 DocumentFileSocket ds = new DocumentFileSocket();
                 BeanUtils.copyProperties(d,ds);
-                ds.setLink("http://localhost:8081" + ApiService.getLinkForDocumentFile(d).getHref());
+                ds.setLink(getDocumentLink(d));
                 documentsSockets.add(ds);
             }
             Operation operation = new Operation();
+            operation.setHost(getHost());
             operation.setDocuments(documentsSockets);
             operation.setTransaction(Transaction.CONEXION);
             DataOutputStream os = new DataOutputStream(socket.getOutputStream());
@@ -58,5 +69,17 @@ public class MasterConexionManager implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Host getHost() throws UnknownHostException {
+
+        Host host = new Host();
+        host.setIp(InetAddress.getLocalHost().getHostAddress());
+        host.setPort(serverPort);
+        return host;
+    }
+
+    private String getDocumentLink(DocumentFile d) throws IOException {
+        return "http://"+ InetAddress.getLocalHost().getHostAddress() + ":" + restPort + ApiService.getLinkForDocumentFile(d).getHref();
     }
 }
