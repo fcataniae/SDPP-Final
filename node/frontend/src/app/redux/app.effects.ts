@@ -36,7 +36,7 @@ export class AppEffects {
     ofType(getAllFiles),
     switchMap(() => this.fs$.getSharedList()
         .pipe(
-          map(res => successGetAllFiles({files: res._embedded.documentFileList })),
+          map(res => successGetAllFiles({files: res })),
           catchError(err => of(errorGetAllFiles({error: err})))
         )
       )

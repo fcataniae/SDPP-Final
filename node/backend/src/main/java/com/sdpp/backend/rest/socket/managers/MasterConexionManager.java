@@ -3,7 +3,6 @@ package com.sdpp.backend.rest.socket.managers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.service.ApiService;
-import com.sdpp.backend.rest.socket.domain.DocumentFileSocket;
 import com.sdpp.backend.rest.socket.domain.Host;
 import com.sdpp.backend.rest.socket.domain.Operation;
 import com.sdpp.backend.rest.socket.domain.OperationResponse;
@@ -11,7 +10,6 @@ import com.sdpp.backend.rest.socket.domain.enums.Transaction;
 import com.sdpp.backend.rest.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -44,12 +42,10 @@ public class MasterConexionManager implements Runnable{
             ){
             logger.info("Connecting to master");
             Collection<DocumentFile> documents = new ArrayList<>(FileUtil.getSharedFolderList().values());
-            Collection<DocumentFileSocket> documentsSockets = new ArrayList<>();
+            Collection<DocumentFile> documentsSockets = new ArrayList<>();
             for (DocumentFile d : documents) {
-                DocumentFileSocket ds = new DocumentFileSocket();
-                BeanUtils.copyProperties(d,ds);
-                ds.setLink(getDocumentLink(d));
-                documentsSockets.add(ds);
+                d.setLink(getDocumentLink(d));
+                documentsSockets.add(d);
             }
             Operation operation = new Operation();
             operation.setHost(getHost());
@@ -80,6 +76,6 @@ public class MasterConexionManager implements Runnable{
     }
 
     private String getDocumentLink(DocumentFile d) throws IOException {
-        return "http://"+ InetAddress.getLocalHost().getHostAddress() + ":" + restPort + ApiService.getLinkForDocumentFile(d).getHref();
+        return "http://"+ InetAddress.getLocalHost().getHostAddress() + ":" + restPort + ApiService.getLinkForDocumentFile(d);
     }
 }

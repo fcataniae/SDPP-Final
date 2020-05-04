@@ -1,6 +1,7 @@
 package com.sdpp.backend.rest.socket.domain;
 
 
+import com.sdpp.backend.rest.domain.DocumentFile;
 import com.sdpp.backend.rest.socket.domain.enums.Transaction;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ import java.util.Collection;
 public class Operation implements Serializable {
 
     private Transaction transaction;
-    private Collection<DocumentFileSocket> documents;
+    private Collection<DocumentFile> documents;
     private Host host;
 
     public Operation() {
@@ -23,11 +24,11 @@ public class Operation implements Serializable {
         this.host = host;
     }
 
-    public Collection<DocumentFileSocket> getDocuments() {
+    public Collection<DocumentFile> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(Collection<DocumentFileSocket> documents) {
+    public void setDocuments(Collection<DocumentFile> documents) {
         this.documents = documents;
     }
 

@@ -6,6 +6,7 @@ import java.util.Objects;
 public class DocumentFile implements Serializable {
 
     private String name;
+    private String link;
     private MetaData meta;
     private Sha256 sha256;
 
@@ -25,6 +26,14 @@ public class DocumentFile implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(sha256);
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public Sha256 getSha256() {

@@ -10,15 +10,10 @@ import com.sdpp.backend.rest.service.components.WatcherSystemService;
 import com.sdpp.backend.rest.util.CustomCacheBuilder;
 import com.sdpp.backend.rest.util.FileUtil;
 import com.sdpp.backend.rest.util.RestUtil;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -128,28 +123,21 @@ public class ApiService {
     }
 
     @GetMapping(value = "files")
-    public CollectionModel<EntityModel> getSharedList() throws IOException {
+    public Collection<DocumentFile> getSharedList() throws IOException {
 
 
         Map<Sha256, DocumentFile> files = inMemoryPathController.getDocuments();
-        Collection<EntityModel> models = new ArrayList<>();
         Collection<DocumentFile> documentFiles = files.values();
-        for (DocumentFile f : documentFiles) {
-            EntityModel<DocumentFile> model = new EntityModel<>(f);
-            Link link = getLinkForDocumentFile(f);
-            model.add(link);
-            models.add(model);
+        for (DocumentFile d : documentFiles) {
+            d.setLink(getLinkForDocumentFile(d));
         }
-        CollectionModel<EntityModel> col = new CollectionModel<>(models);
-        Link link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class).getSharedList()).withSelfRel();
-        col.add(link);
-        return col;
+        return documentFiles;
     }
 
-    public static Link getLinkForDocumentFile(DocumentFile f) throws IOException {
+    public static String getLinkForDocumentFile(DocumentFile f) throws IOException {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ApiService.class)
                 .getFilesById(f.getSha256().getHashed()))
-                .withSelfRel();
+                .withSelfRel().getHref();
     }
 
     @GetMapping("search/files")
